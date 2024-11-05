@@ -2,6 +2,7 @@
 public class SplendorRunner {
     public static void main(String args[])
     {
-        System.out.println("yo");
+        //Creates window object
+        SplendorFrame window = new SplendorFrame();
     }
 }
