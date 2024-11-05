@@ -14,6 +14,6 @@ public class SplendorFrame extends JFrame {
         setVisible(true);
 
         //adding the frames
-        add(new SplendorGame());
+        add(new SplendorMenu());
     }
 }
