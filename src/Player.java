@@ -36,6 +36,13 @@ public class Player {
     public int[] getTokens(){
         return tokens;
     }
+    public int[] getGems() { //return array of gems thingies
+        int[] gems = new int[5];
+        for(int c = 0; c < cards.length; c++) {
+            gems[c] = cards[c].size();
+        }
+        return gems;
+    }
 
     
 }
