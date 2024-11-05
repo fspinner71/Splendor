@@ -4,6 +4,7 @@ public class SplendorFrame extends JFrame {
     //Width and height
     private final int WIDTH = 1280;
     private final int HEIGHT = 720;
+
     public SplendorFrame()
     {
         //Setting basic settings of the window
