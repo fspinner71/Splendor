@@ -1,4 +1,4 @@
-
-public class SplendorEnd {
+import javax.swing.*;
+public class SplendorEnd extends JPanel {
 
 }
