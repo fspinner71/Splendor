@@ -15,7 +15,5 @@ public class SplendorFrame extends JFrame {
 
         //adding the frames
         add(new SplendorGame());
-        add(new SplendorMenu());
-        add(new SplendorEnd());
     }
 }
