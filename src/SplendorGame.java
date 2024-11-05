@@ -24,10 +24,15 @@ public class SplendorGame extends JPanel implements MouseListener{
     private ArrayList<Card> draw2;
     private ArrayList<Card> draw3;
 
+    public SplendorGame()
+    {
+
+    }
+
     public void paint(Graphics g)
     {
         super.paint(g);
-        g.setColor(Color.BLACK);
+        g.setColor(Color.black);
         g.drawString("HELLO", 600, 300);
     }
 
