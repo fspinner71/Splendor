@@ -1,8 +1,6 @@
+import java.awt.*;
 import java.awt.image.*;
 import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.awt.*;
-import java.io.*;
 public class Patron {
 private static BufferedImage[] images; //holds all the images
 private int points;
@@ -56,5 +54,4 @@ private Button button;
     public void paint(Graphics g) {
         //painting the card and stuff
     }
-
 }
