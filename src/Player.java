@@ -2,13 +2,14 @@ import java.util.*;
 
 public class Player {
     private int[] tokens;
+    private int[] gems;
     private ArrayList<Card>[] cards;
     private ArrayList<Card> reservedCards;
     private ArrayList<Patron> patrons;
 
     public Player(){
         this.tokens = new int[6];
-        
+        this.gems = new int[5];
         this.cards = new ArrayList[5];
         for (int i = 0; i < 5; i++)
             this.cards[i] = new ArrayList<Card>();
@@ -42,27 +43,29 @@ public class Player {
         return tokens;
     }
     public int[] getGems() { //return array of gems thingies
-        int[] gems = new int[5];
+        /*int[] gems = new int[5];
         for(int c = 0; c < cards.length; c++) {
             gems[c] = cards[c].size();
         }
-        return gems;
+        return gems;*/
+        return this.gems;
     }
 
     public boolean buyCard(Card c){
         boolean canBuy = false;
         int[] price = c.getPrice();
-        int[] gems = getGems();
 
         for (int i = 0; i < 5; i++) { // check if you have sufficient amounts of each gem to buy this card
-            if (gems[i] + this.tokens[i] < price[i])
+            if (this.gems[i] + this.tokens[i] < price[i])
                 return false;
         }
 
         for (int i = 0; i < 5; i++) {
-            int num_to_remove = price[i] - gems[i];
+            int num_to_remove = price[i] - this.gems[i];
             this.tokens[i] -= num_to_remove;
         }
+
+        this.gems[c.getGem()]++;
 
         return true;
     }
