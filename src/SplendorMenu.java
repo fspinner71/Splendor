@@ -10,21 +10,22 @@ public class SplendorMenu extends JPanel implements MouseListener {
     public SplendorMenu () {
 
         try {
-            background = ImageIO.read(SplendorMenu.class.getResource("/Images/Background.png"));
+            background = ImageIO.read(SplendorMenu.class.getResource("/image/Background.png"));
             }
             catch (Exception E) {
                 System.out.println("menu images failed to load");
-               
+                E.printStackTrace();
             }
 
-
+            
 
     }
     public void paint(Graphics g)
     {
         super.paint(g);
-        g.drawImage(background, 100, 100, 100, 100, null);
+        g.drawImage(background, 0, 0, getWidth(), getHeight(), null);
         
+      
     }
     public void mousePressed(MouseEvent e) {}
     public void mouseClicked(MouseEvent e) {}

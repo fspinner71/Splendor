@@ -1,9 +1,11 @@
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.ArrayList;
-import javax.swing.*;
 
+import javax.swing.*;
+import java.io.*;
+import java.net.URL;
+import java.util.*;
 public class SplendorGame extends JPanel implements MouseListener{
     public final int BLACK = 0;
     public final int WHITE = 1;
@@ -58,9 +60,48 @@ public class SplendorGame extends JPanel implements MouseListener{
     public void makePatrons() {
         ArrayList<Patron> patronDeck = new ArrayList<Patron>(); //temporary patron deck that will contain all patrons from the csv file
         patrons = new Patron[size+1];  //curent usable patrons
- 
+       
 
-        // shuffle patron deck and add the number needed to the array(varies with player size)
+  
+        
+        String line; 
+
+        try {
+           
+            URL tem = SplendorGame.class.getResource("/csv/csvpatron.csv");
+            BufferedReader r = new BufferedReader(new InputStreamReader(tem.openStream()));
+         
+            while((line = r.readLine()) != null) {
+                String[] info = line.split(","); //array of the stuff in csv file
+                
+               
+                int[] price = new int[5]; //price array temp
+
+                for(int i = 0; i < info.length-1; i ++) { //loop to convert price to int
+
+                    price[i] = Integer.parseInt(info[i]); //convert to int
+                }
+
+                Patron temp = new Patron(4, price, Integer.parseInt(info[5])); //create new patron
+                patronDeck.add(temp); // add patron
+                
+            }
+            
+        }
+        catch( Exception E){
+            System.out.println("Patron csv file doesn't ork");
+          
+        }
+
+        
+        
+
+        // shuffle patron deck 
+        Collections.shuffle(patronDeck);
+        for(int a= 0; a < patrons.length; a++) {
+            patrons[a] = patronDeck.get(a); //fill usable patrons
+        }
+        System.out.println(patrons[0].getPrice()[3]);
     }
 
     public void makeCards() {

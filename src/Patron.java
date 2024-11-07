@@ -38,7 +38,12 @@ private Button button;
         image = images[i];
         button = b;
     }
-
+    public Patron(int p, int[] pr, int i) {  //points/price/button as well as integer that corresponds with images array(0-9)
+        points = p;
+        price = pr;
+        image = images[i];
+        
+    }
     public int getPoints() {
         return points;
     }
