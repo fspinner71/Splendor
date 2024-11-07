@@ -35,9 +35,13 @@ public class SplendorGame extends JPanel implements MouseListener{
         
         makeTokens();
         makeLevel1();
+        makeLevel2();
         makePatrons();
         makePlayers();
-        System.out.println(Arrays.toString(patrons)); //TEST PIRNTLNE REMOVE LATER
+        System.out.println(Arrays.toString(patrons)); //TEST PRINTLINE
+        System.out.println(Arrays.toString(cards1)); //TEST PRINTLINE
+        System.out.println(Arrays.toString(cards2)); //TEST PRINTLINE
+        
     }
     public void makeTokens() {
 
@@ -109,7 +113,7 @@ public class SplendorGame extends JPanel implements MouseListener{
         try {
             URL tem = SplendorGame.class.getResource("/csv/lvl1cards.csv"); //create file reader
             BufferedReader r = new BufferedReader(new InputStreamReader(tem.openStream()));
-
+                
             while((line = r.readLine()) != null) {
                 String[] info = line.split(","); //array of the stuff in csv file
                 
@@ -118,7 +122,7 @@ public class SplendorGame extends JPanel implements MouseListener{
 
                 for(int i = 2; i < info.length; i ++) { //loop to convert price to int
 
-                    price[i] = Integer.parseInt(info[i]); //convert to int
+                    price[i-2] = Integer.parseInt(info[i]); //convert to int
                 }
                 
                 Card temp = new Card(Integer.parseInt(info[0]), Integer.parseInt(info[1]), 1, price); //create new card
@@ -127,6 +131,7 @@ public class SplendorGame extends JPanel implements MouseListener{
             }
         } catch (Exception E) {
             System.out.println("Error on lvl1 cards ");
+            E.printStackTrace();
         }
 
         Collections.shuffle(draw1);
@@ -161,7 +166,7 @@ public class SplendorGame extends JPanel implements MouseListener{
 
                 for(int i = 2; i < info.length; i ++) { //loop to convert price to int
 
-                    price[i] = Integer.parseInt(info[i]); //convert to int
+                    price[i-2] = Integer.parseInt(info[i]); //convert to int
                 }
                 
                 Card temp = new Card(Integer.parseInt(info[0]), Integer.parseInt(info[1]), 2, price); //create new card

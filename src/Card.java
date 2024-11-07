@@ -1,4 +1,6 @@
 import java.awt.image.*;
+import java.util.Arrays;
+
 import javax.imageio.ImageIO;
 
 public class Card {
@@ -70,11 +72,12 @@ public class Card {
         return this.price;
     }
 
-    public int getColor(){
-        return this.gemColor;
-    }
+
 
     public void flip(){
         this.isFlipped = (!isFlipped) ? true : false;
+    }
+    public String toString() {
+        return "Card is worth " +  points + " points. its, gem color is " + gemColor + " its level is " + level + " its price is " + Arrays.toString(price) ;
     }
 }
