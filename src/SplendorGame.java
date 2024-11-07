@@ -34,7 +34,7 @@ public class SplendorGame extends JPanel implements MouseListener{
 
         
         makeTokens();
-        makeCards();
+        makeLevel1();
         makePatrons();
         makePlayers();
         System.out.println(Arrays.toString(patrons)); //TEST PIRNTLNE REMOVE LATER
@@ -105,9 +105,40 @@ public class SplendorGame extends JPanel implements MouseListener{
         
     }
 
-    public void makeCards() {
+    public void makeLevel1() {
+        String line;
+        cards1 = new Card[5]; //create stuff
+        draw1 = new ArrayList<>();
+        try {
+            URL tem = SplendorGame.class.getResource("/csv/lvl1cards.csv"); //create file reader
+            BufferedReader r = new BufferedReader(new InputStreamReader(tem.openStream()));
 
-        //take in csv file and make the cards and add it to the arrays and arraylist piles
+            while((line = r.readLine()) != null) {
+                String[] info = line.split(","); //array of the stuff in csv file
+                
+               
+                int[] price = new int[5]; //price array temp
+
+                for(int i = 2; i < info.length; i ++) { //loop to convert price to int
+
+                    price[i] = Integer.parseInt(info[i]); //convert to int
+                }
+                
+                Card temp = new Card(Integer.parseInt(info[0]), Integer.parseInt(info[1]), 1, price); //create new card
+                draw1.add(temp); // add patron
+                
+            }
+        } catch (Exception E) {
+            System.out.println("Error on lvl1 cards ");
+        }
+
+        Collections.shuffle(draw1);
+
+        for(int c = 0; c < cards1.length; c++) {
+            cards1[c] = draw1.get(c);
+            draw1.remove(c);
+            //add cards to stuff 
+        }
     }
     public void makePlayers() {
         players = new Player[size];
