@@ -1,11 +1,13 @@
 import java.awt.*;
 import java.awt.image.*;
 import javax.imageio.ImageIO;
+import java.util.*;
 public class Patron {
 private static BufferedImage[] images; //holds all the images
 private int points;
 private int[] price;
 private BufferedImage image;
+
 private Button button;
     static {
 
@@ -58,5 +60,8 @@ private Button button;
     
     public void paint(Graphics g) {
         //painting the card and stuff
+    }
+    public String toString() {
+        return "Patron is worth 4 points, its price is " + Arrays.toString(price);
     }
 }

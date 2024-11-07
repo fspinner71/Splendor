@@ -37,6 +37,7 @@ public class SplendorGame extends JPanel implements MouseListener{
         makeCards();
         makePatrons();
         makePlayers();
+        System.out.println(Arrays.toString(patrons)); //TEST PIRNTLNE REMOVE LATER
     }
     public void makeTokens() {
 
@@ -68,7 +69,7 @@ public class SplendorGame extends JPanel implements MouseListener{
 
         try {
            
-            URL tem = SplendorGame.class.getResource("/csv/csvpatron.csv");
+            URL tem = SplendorGame.class.getResource("/csv/csvpatron.csv"); //create file reader
             BufferedReader r = new BufferedReader(new InputStreamReader(tem.openStream()));
          
             while((line = r.readLine()) != null) {
@@ -81,7 +82,7 @@ public class SplendorGame extends JPanel implements MouseListener{
 
                     price[i] = Integer.parseInt(info[i]); //convert to int
                 }
-
+                
                 Patron temp = new Patron(4, price, Integer.parseInt(info[5])); //create new patron
                 patronDeck.add(temp); // add patron
                 
@@ -101,7 +102,7 @@ public class SplendorGame extends JPanel implements MouseListener{
         for(int a= 0; a < patrons.length; a++) {
             patrons[a] = patronDeck.get(a); //fill usable patrons
         }
-        System.out.println(patrons[0].getPrice()[3]);
+        
     }
 
     public void makeCards() {
