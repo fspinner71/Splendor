@@ -42,13 +42,8 @@ public class Player {
     public int[] getTokens(){
         return tokens;
     }
-    public int[] getGems() { //return array of gems thingies
-        /*int[] gems = new int[5];
-        for(int c = 0; c < cards.length; c++) {
-            gems[c] = cards[c].size();
-        }
-        return gems;*/
-        return this.gems;
+    public int[] getGems() { 
+        return gems;
     }
 
     public boolean buyCard(Card c){
@@ -66,36 +61,19 @@ public class Player {
         }
 
         this.gems[c.getGem()]++;
-
+        
         return true;
     }
     
-    public ArrayList<Integer> buyPatron(Patron[] p) {  //so basically its gonna take in the array of the patrons on board
-        // and then its gonna check if it can buy one and return an arrayList of the ones it can buy using their indexes in the array
-
-        ArrayList<Integer> returned = new ArrayList<>(); //arraylist of indexes that u return
-
-        for(int c = 0; c < p.length; c++) { //outer loop that loops through every patron
-            
-            if(p[c] != null) { //checks to see patron isnt null
-                Patron current = p[c]; //current patron u are looking at 
-                Boolean canbuy = true;
-
-                int[] price = current.getPrice(); //gets price of patron
-                int[] gems = getGems(); //gems of player 
-                
-                for (int i = 0; i < 5; i++) { //checks to see if u can buy it
-                    if(price[i] > gems[i]) {
-                        canbuy = false;
-                        break;
-                    }
-                }
-                if (canbuy == true) {
-                    returned.add(c); 
-                }
+    public boolean buyPatron(Patron p) {  
+        int[] price = p.getPrice(); //price of patron
+        for(int c = 0; c < price.length; c++) { //check if you can buy
+            if(price[c] > gems[c]) {
+                return false;
             }
-        }
 
-        return returned; 
-    }
+        }
+        patrons.add(p); //if you can buy add the patron to the player 
+        return true; //return true to the game
+}
 }
