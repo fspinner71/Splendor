@@ -61,9 +61,6 @@ public class SplendorGame extends JPanel implements MouseListener{
     public void makePatrons() {
         ArrayList<Patron> patronDeck = new ArrayList<Patron>(); //temporary patron deck that will contain all patrons from the csv file
         patrons = new Patron[size+1];  //curent usable patrons
-       
-
-  
         
         String line; 
 
@@ -109,6 +106,7 @@ public class SplendorGame extends JPanel implements MouseListener{
 
         //take in csv file and make the cards and add it to the arrays and arraylist piles
     }
+    
     public void makePlayers() {
         players = new Player[size];
 

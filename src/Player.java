@@ -25,6 +25,9 @@ public class Player {
             for (int j = 0; j < this.cards[i].size(); i++)
                 score += this.cards[i].get(j).getPoints();
 
+        for (int i = 0; i < this.patrons.size(); i++)
+            score += this.patrons.get(i).getPoints();
+
         return score;
     } 
 
@@ -61,6 +64,7 @@ public class Player {
         }
 
         this.gems[c.getGem()]++;
+        cards[c.getColor()].add(c);
         
         return true;
     }
