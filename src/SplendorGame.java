@@ -133,11 +133,61 @@ public class SplendorGame extends JPanel implements MouseListener{
 
         for(int c = 0; c < cards1.length; c++) {
             cards1[c] = draw1.get(c);
-            draw1.remove(c);
+            
             //add cards to stuff 
         }
+        //remove cards from draw pile
+        draw1.remove(0);
+        draw1.remove(1);
+        draw1.remove(2);
+        draw1.remove(3);
+        draw1.remove(4);
+
     }
     
+    public void makeLevel2() {
+        String line;
+        cards2 = new Card[5]; //create stuff
+        draw2 = new ArrayList<>();
+        try {
+            URL tem = SplendorGame.class.getResource("/csv/lvl2cards.csv"); //create file reader
+            BufferedReader r = new BufferedReader(new InputStreamReader(tem.openStream()));
+
+            while((line = r.readLine()) != null) {
+                String[] info = line.split(","); //array of the stuff in csv file
+                
+               
+                int[] price = new int[5]; //price array temp
+
+                for(int i = 2; i < info.length; i ++) { //loop to convert price to int
+
+                    price[i] = Integer.parseInt(info[i]); //convert to int
+                }
+                
+                Card temp = new Card(Integer.parseInt(info[0]), Integer.parseInt(info[1]), 2, price); //create new card
+                draw2.add(temp); // add patron
+                
+            }
+        } catch (Exception E) {
+            System.out.println("Error on lvl2 cards ");
+        }
+
+        Collections.shuffle(draw2);
+
+        for(int c = 0; c < cards2.length; c++) {
+            cards2[c] = draw2.get(c);
+            
+            //add cards to stuff 
+        }
+        //remove cards from draw pile
+        draw2.remove(0);
+        draw2.remove(1);
+        draw2.remove(2);
+        draw2.remove(3);
+        draw2.remove(4);
+
+    }
+
     public void makePlayers() {
         players = new Player[size];
 
@@ -150,10 +200,6 @@ public class SplendorGame extends JPanel implements MouseListener{
         g.drawString("HELLO", 600, 300);
     }
 
-    public void createCards() {
-
-
-    }
 
     public void mousePressed(MouseEvent e) {}
     public void mouseClicked(MouseEvent e) {}
