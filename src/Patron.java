@@ -1,7 +1,7 @@
 import java.awt.*;
 import java.awt.image.*;
-import javax.imageio.ImageIO;
 import java.util.*;
+import javax.imageio.ImageIO;
 public class Patron {
 private static BufferedImage[] images; //holds all the images
 private int points;
@@ -10,8 +10,6 @@ private BufferedImage image;
 
 private Button button;
     static {
-
-
         images = new BufferedImage[10];
 
         try {
@@ -30,7 +28,7 @@ private Button button;
 
         }
         catch (Exception E) {
-            System.out.println("Patron images failed to lod");
+            System.out.println("Patron images failed to load");
         }
     }
 
@@ -40,12 +38,14 @@ private Button button;
         image = images[i];
         button = b;
     }
+
     public Patron(int p, int[] pr, int i) {  //points/price/button as well as integer that corresponds with images array(0-9)
         points = p;
         price = pr;
         image = images[i];
         
     }
+    
     public int getPoints() {
         return points;
     }
