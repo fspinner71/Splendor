@@ -11,9 +11,15 @@ public class SplendorFrame extends JFrame {
         super("Splendor");
         setSize(WIDTH, HEIGHT);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        add(new SplendorMenu(this));
         setVisible(true);
-
-        //adding the frames
-        add(new SplendorGame(4));
+    }
+    public void addGame()
+    {
+    	add(new SplendorGame(4));
+    }
+    public void addEnd()
+    {
+    	add (new SplendorEnd());
     }
 }

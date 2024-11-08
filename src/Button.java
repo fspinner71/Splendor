@@ -31,7 +31,7 @@ public class Button {
     }
 
     public void paint(Graphics g){
-        // do later
+        g.drawImage(image, x, y, width, height, null);
     }
 
     public boolean isInside(int mouse_x, int mouse_y){
