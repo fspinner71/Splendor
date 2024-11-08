@@ -36,12 +36,14 @@ public class SplendorGame extends JPanel implements MouseListener{
         makeTokens();
         makeLevel1();
         makeLevel2();
+        makeLevel3();
         makePatrons();
         makePlayers();
         System.out.println(Arrays.toString(patrons)); //TEST PRINTLINE
         System.out.println(Arrays.toString(cards1)); //TEST PRINTLINE
         System.out.println(Arrays.toString(cards2)); //TEST PRINTLINE
-        
+        System.out.println(Arrays.toString(cards3)); //TEST PRINTLINE
+
     }
     public void makeTokens() {
 
@@ -190,6 +192,49 @@ public class SplendorGame extends JPanel implements MouseListener{
         draw2.remove(2);
         draw2.remove(3);
         draw2.remove(4);
+
+    }
+
+    public void makeLevel3() {
+        String line;
+        cards3 = new Card[5]; //create stuff
+        draw3 = new ArrayList<>();
+        try {
+            URL tem = SplendorGame.class.getResource("/csv/lvl3cards.csv"); //create file reader
+            BufferedReader r = new BufferedReader(new InputStreamReader(tem.openStream()));
+
+            while((line = r.readLine()) != null) {
+                String[] info = line.split(","); //array of the stuff in csv file
+                
+               
+                int[] price = new int[5]; //price array temp
+
+                for(int i = 2; i < info.length; i ++) { //loop to convert price to int
+
+                    price[i-2] = Integer.parseInt(info[i]); //convert to int
+                }
+                
+                Card temp = new Card(Integer.parseInt(info[0]), Integer.parseInt(info[1]), 3, price); //create new card
+                draw3.add(temp); // add patron
+                
+            }
+        } catch (Exception E) {
+            System.out.println("Error on lvl3 cards ");
+        }
+
+        Collections.shuffle(draw3);
+
+        for(int c = 0; c < cards3.length; c++) {
+            cards3[c] = draw3.get(c);
+            
+            //add cards to stuff 
+        }
+        //remove cards from draw pile
+        draw3.remove(0);
+        draw3.remove(1);
+        draw3.remove(2);
+        draw3.remove(3);
+        draw3.remove(4);
 
     }
 
