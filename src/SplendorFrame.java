@@ -4,6 +4,10 @@ public class SplendorFrame extends JFrame {
     //Width and height
     private final int WIDTH = 1280;
     private final int HEIGHT = 720;
+    
+    SplendorMenu menu;
+    SplendorGame game;
+    SplendorEnd end;
 
     public SplendorFrame()
     {
@@ -11,15 +15,27 @@ public class SplendorFrame extends JFrame {
         super("Splendor");
         setSize(WIDTH, HEIGHT);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        add(new SplendorMenu(this));
+        
+        menu = new SplendorMenu(this);
+        
+        add(menu);
+        
         setVisible(true);
     }
     public void addGame()
     {
-    	add(new SplendorGame(4));
+    	game = new SplendorGame(4);
+    	menu.setVisible(false);
+    	
+    	remove(menu);
+    	add(game);
     }
     public void addEnd()
     {
-    	add (new SplendorEnd());
+    	end = new SplendorEnd();
+    	game.setVisible(false);
+    	
+    	remove(game);
+    	add(end);
     }
 }

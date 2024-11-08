@@ -55,11 +55,7 @@ public class SplendorGame extends JPanel implements MouseListener{
         System.out.println(Arrays.toString(patrons)); //TEST PRINTLINE
         System.out.println(Arrays.toString(cards1)); //TEST PRINTLINE
         System.out.println(Arrays.toString(cards2)); //TEST PRINTLINE
-<<<<<<< HEAD
-=======
         System.out.println(Arrays.toString(cards3)); //TEST PRINTLINE
-
->>>>>>> 7aad29fadaa058683510f6906d7514ab652b7a72
     }
     public void makeTokens() {
 
@@ -267,7 +263,10 @@ public class SplendorGame extends JPanel implements MouseListener{
     }
 
 
-    public void mousePressed(MouseEvent e) {}
+    public void mousePressed(MouseEvent e) 
+    {
+    	repaint();
+    }
     public void mouseClicked(MouseEvent e) {}
     public void mouseEntered(MouseEvent e) {}
     public void mouseExited(MouseEvent e) {}
