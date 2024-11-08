@@ -1,11 +1,16 @@
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
 
 import javax.swing.*;
 import java.io.*;
 import java.net.URL;
 import java.util.*;
+import java.awt.*;
+import java.awt.image.*;
+import java.util.*;
+import javax.imageio.ImageIO;
 public class SplendorGame extends JPanel implements MouseListener{
     public final int BLACK = 0;
     public final int WHITE = 1;
@@ -28,11 +33,19 @@ public class SplendorGame extends JPanel implements MouseListener{
     private ArrayList<Card> draw3;
     public int[] tokens;
     public int size;
+    public BufferedImage background;
     public SplendorGame(int size)
     {
         this.size = size; //how many players are playign the game
 
-        
+        try {
+            this.background = ImageIO.read(SplendorGame.class.getResource("/Images/Background.png"));
+        } catch (Exception e) {
+            System.out.println("mogus");
+            return;
+        }
+
+
         makeTokens();
         makeLevel1();
         makeLevel2();
@@ -41,7 +54,6 @@ public class SplendorGame extends JPanel implements MouseListener{
         System.out.println(Arrays.toString(patrons)); //TEST PRINTLINE
         System.out.println(Arrays.toString(cards1)); //TEST PRINTLINE
         System.out.println(Arrays.toString(cards2)); //TEST PRINTLINE
-        
     }
     public void makeTokens() {
 
@@ -202,7 +214,7 @@ public class SplendorGame extends JPanel implements MouseListener{
     {
         super.paint(g);
         g.setColor(Color.black);
-        g.drawString("HELLO", 600, 300);
+        g.drawImage(background, 0, 0, getWidth(), getHeight(), null);
     }
 
 
