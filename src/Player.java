@@ -64,7 +64,7 @@ public class Player {
         }
 
         this.gems[c.getGem()]++;
-        cards[c.getColor()].add(c);
+        cards[c.getGem()].add(c);
         
         return true;
     }
