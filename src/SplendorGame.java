@@ -28,6 +28,7 @@ public class SplendorGame extends JPanel implements MouseListener{
     private ArrayList<Card> draw3;
     public int[] tokens;
     public int size;
+    public int cardHeight, cardLength;
     public SplendorGame(int size)
     {
         this.size = size; //how many players are playign the game
@@ -38,15 +39,21 @@ public class SplendorGame extends JPanel implements MouseListener{
         makeLevel2();
         makeLevel3();
         makePatrons();
-        makePlayers();
+        players = new Player[size];
         
         System.out.println(Arrays.toString(cards1)); //TEST PRINTLINE
         System.out.println(Arrays.toString(cards2)); //TEST PRINTLINE
         System.out.println(Arrays.toString(cards3)); //TEST PRINTLINE
 
+        
+
         turn = 0;
         turnOver = false; //set turn to 0
-    }
+        gameStarted = true;
+        gameInProgress = true;
+
+      
+            }
     public void makeTokens() {
 
         tokens = new int[6]; //initalize tokens and add 6 of each except yellow
@@ -142,8 +149,8 @@ public class SplendorGame extends JPanel implements MouseListener{
 
         for(int c = 0; c < cards1.length; c++) {
             cards1[c] = draw1.get(c);
-            
-            //add cards to stuff 
+           cards1[c].addButton(c*100 + 500, 500); //adds button change coords later
+           
         }
         //remove cards from draw pile
         draw1.remove(0);
@@ -151,7 +158,7 @@ public class SplendorGame extends JPanel implements MouseListener{
         draw1.remove(2);
         draw1.remove(3);
         draw1.remove(4);
-
+        
     }
     
     public void makeLevel2() {
@@ -240,16 +247,15 @@ public class SplendorGame extends JPanel implements MouseListener{
 
     }
 
-    public void makePlayers() {
-        players = new Player[size];
-
-    }
+    
+    
 
     public void paint(Graphics g)
     {
         super.paint(g);
-        g.setColor(Color.black);
-        g.drawString("HELLO", 600, 300);
+        for(int c  =0; c < cards1.length; c++) {
+            cards1[c].paint(g);
+        }
     }
 
 

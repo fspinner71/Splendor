@@ -15,6 +15,7 @@ public class Button {
         this.height = height;
         this.image = image;
     }
+    
 
     public void setPosition(int new_x, int new_y){
         this.x = new_x;
