@@ -149,7 +149,7 @@ repaint();
 
         for(int c = 0; c < cards1.length; c++) {
             cards1[c] = draw1.get(c);
-           cards1[c].addButton(c*100 + 500, 500); //adds button change coords later
+           cards1[c].addButton(c*110 + 200, 500); //adds button change coords later
            
         }
         //remove cards from draw pile

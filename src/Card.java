@@ -110,7 +110,7 @@ public class Card {
     
 
     public void addButton(int x, int y) {
-        Button b = new Button(x, y, width/10, height/10, getImage());
+        Button b = new Button(x, y, width/5, height/5, getImage());
         button = b;
         System.out.println("hello");
     }
