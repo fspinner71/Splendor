@@ -51,7 +51,7 @@ public class SplendorGame extends JPanel implements MouseListener{
         turnOver = false; //set turn to 0
         gameStarted = true;
         gameInProgress = true;
-
+repaint();
       
             }
     public void makeTokens() {
