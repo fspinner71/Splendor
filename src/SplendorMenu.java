@@ -50,6 +50,7 @@ public class SplendorMenu extends JPanel implements MouseListener {
        c.paint(g);
        
     }
+    
     public void mousePressed(MouseEvent e) 
     {
     	if(e.getButton() != MouseEvent.BUTTON1) {return;}
