@@ -85,13 +85,14 @@ public class Card {
     private int[] price; 
     private Button button;
     private boolean isFlipped;
-
+     
     public Card(int points, int gemColor, int level, int[] price){
         this.points = points;
         this.gemColor = gemColor;
         this.level = level;
         this.price = price;
         this.isFlipped = false;
+        
     }
 
     public int getPoints(){
@@ -109,11 +110,12 @@ public class Card {
     
 
     public void addButton(int x, int y) {
-        Button b = new Button(x, y, width, height, getImage());
+        Button b = new Button(x, y, width/10, height/10, getImage());
         button = b;
-        System.out.println("hi");
+        System.out.println("hello");
     }
     public BufferedImage getImage() {
+        if(isFlipped) {
         if(level==1) {
             return lvl1cards[gemColor];
         }
@@ -122,6 +124,10 @@ public class Card {
         }
         return lvl3cards[gemColor];
     }
+
+return cardBacks[level-1]; //return card back if not flipped
+
+}
 
     public Button getButton() {
         return button;
