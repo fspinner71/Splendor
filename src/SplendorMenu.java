@@ -43,6 +43,12 @@ public class SplendorMenu extends JPanel implements MouseListener {
         
        startButton.paint(g);
        
+       int[] price = {0,3,7,4,0};
+       Card c = new Card(5, SplendorGame.RED, 2, price);
+       c.flip();
+       c.getButton().setPosition(50, 50);
+       c.paint(g);
+       
     }
     public void mousePressed(MouseEvent e) 
     {

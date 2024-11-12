@@ -30,7 +30,25 @@ public class Button {
     public void setImage(BufferedImage new_img){
         this.image = new_img;
     }
+    
+    public int getX()
+    {
+    	return x;
+    }
+    
+    public int getY()
+    {
+    	return y;
+    }
 
+    public int getWidth()
+    {
+    	return width;
+    }
+    public int getHeight()
+    {
+    	return height;
+    }
     public void paint(Graphics g){
         g.drawImage(image, x, y, width, height, null);
     }

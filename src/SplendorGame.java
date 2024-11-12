@@ -7,12 +7,12 @@ import java.io.*;
 import java.net.URL;
 import java.util.*;
 public class SplendorGame extends JPanel implements MouseListener{
-    public final int BLACK = 0;
-    public final int WHITE = 1;
-    public final int GREEN = 2;
-    public final int RED = 3;
-    public final int BLUE = 4;
-    public final int YELLOW = 5;
+    public static final int BLACK = 0;
+    public static final int WHITE = 1;
+    public static final int GREEN = 2;
+    public static final int RED = 3;
+    public static final int BLUE = 4;
+    public static final int YELLOW = 5;
 
     private int turn;
     private boolean turnOver;
@@ -149,7 +149,7 @@ repaint();
 
         for(int c = 0; c < cards1.length; c++) {
             cards1[c] = draw1.get(c);
-           cards1[c].addButton(c*100 + 500, 500); //adds button change coords later
+           cards1[c].getButton().setPosition(c*100 + 500, 500);
            
         }
         //remove cards from draw pile

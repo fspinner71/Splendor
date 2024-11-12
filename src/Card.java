@@ -58,11 +58,11 @@ public class Card {
             numbers[8] = ImageIO.read(Card.class.getResource("/Images/8.png"));
             numbers[9] = ImageIO.read(Card.class.getResource("/Images/9.png"));
        
-            costCards[0] = ImageIO.read(Card.class.getResource("/Images/BlackCostCards.png"));
-            costCards[1] = ImageIO.read(Card.class.getResource("/Images/WhiteCostCards.png"));
-            costCards[2] = ImageIO.read(Card.class.getResource("/Images/GreenCostCards.png"));
-            costCards[3] = ImageIO.read(Card.class.getResource("/Images/RedCostCards.png"));
-            costCards[4] = ImageIO.read(Card.class.getResource("/Images/BlueCostCards.png"));
+            costCards[0] = ImageIO.read(Card.class.getResource("/Images/BlackCost.png"));
+            costCards[1] = ImageIO.read(Card.class.getResource("/Images/WhiteCost.png"));
+            costCards[2] = ImageIO.read(Card.class.getResource("/Images/GreenCost.png"));
+            costCards[3] = ImageIO.read(Card.class.getResource("/Images/RedCost.png"));
+            costCards[4] = ImageIO.read(Card.class.getResource("/Images/BlueCost.png"));
             
             costs[0] = ImageIO.read(Card.class.getResource("/Images/BlackCost.png"));
             costs[1] = ImageIO.read(Card.class.getResource("/Images/WhiteCost.png"));
@@ -92,7 +92,7 @@ public class Card {
         this.level = level;
         this.price = price;
         this.isFlipped = false;
-        
+        button = new Button(0, 0, width/2, height/2, getImage());
     }
 
     public int getPoints(){
@@ -106,28 +106,21 @@ public class Card {
     public int[] getPrice(){
         return this.price;
     }
-
     
-
-    public void addButton(int x, int y) {
-        Button b = new Button(x, y, width/10, height/10, getImage());
-        button = b;
-        System.out.println("hello");
-    }
     public BufferedImage getImage() {
         if(isFlipped) {
-        if(level==1) {
-            return lvl1cards[gemColor];
-        }
-        if(level==2) {
-            return lvl2cards[gemColor];
-        }
-        return lvl3cards[gemColor];
+	        if(level==1) {
+	            return lvl1cards[gemColor];
+	        }
+	        if(level==2) {
+	            return lvl2cards[gemColor];
+	        }
+	        return lvl3cards[gemColor];
+	    }
+	
+        return cardBacks[level-1]; //return card back if not flipped
+
     }
-
-return cardBacks[level-1]; //return card back if not flipped
-
-}
 
     public Button getButton() {
         return button;
@@ -139,8 +132,52 @@ return cardBacks[level-1]; //return card back if not flipped
     public String toString() {
         return "Card is worth " +  points + " points. its, gem color is " + gemColor + " its level is " + level + " its price is " + Arrays.toString(price) ;
     }
+    private int scaleX(double scale)
+    {
+    	return (int)(button.getWidth()*scale);
+    }
+    private int scaleY(double scale)
+    {
+    	return (int)(button.getHeight()*scale);
+    }
     public void paint(Graphics g) {
-     
-        button.paint(g);
+    	int x = button.getX();
+    	int y = button.getY();
+    	int width = button.getWidth();
+    	int height = button.getHeight();
+    	
+        if(isFlipped)
+        {
+        	switch(level)
+        	{
+        	case 1:
+        		button.setImage(lvl1cards[gemColor]);
+        		break;
+        	case 2:
+        		button.setImage(lvl2cards[gemColor]);
+        		break;
+        	case 3:
+        		button.setImage(lvl3cards[gemColor]);
+        		break;
+        	}
+        	
+        	button.paint(g);
+        	
+        	g.drawImage(numbers[points], x, y + scaleY(0.04), scaleX(0.29), scaleY(0.2), null);
+        	
+        	int offset = 1;
+        	for(int i = 0; i < price.length; i++)
+        	{
+        		if(price[i] != 0)
+        		{
+        			g.drawImage(costCards[i], x + scaleX(0.04), y + height - scaleY(0.03) - offset * scaleY(0.14), scaleX(0.2), scaleY(0.14), null);
+        			g.drawImage(numbers[price[i]], x + scaleX(0.05), y + height - scaleY(0.02) - offset * scaleY(0.14), scaleX(0.19), scaleY(0.12), null);
+        			offset++;
+        		}
+        	}
+        } else {
+        	button.setImage(cardBacks[level - 1]);
+        	button.paint(g);
+        }
     }
 }
