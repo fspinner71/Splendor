@@ -70,8 +70,6 @@ repaint();
 
         }
         tokens[5] =  5; //5 yellow tokens always
-
-
     }
     public void makePatrons() {
         ArrayList<Patron> patronDeck = new ArrayList<Patron>(); //temporary patron deck that will contain all patrons from the csv file
@@ -247,7 +245,14 @@ repaint();
 
     }
 
-    
+    public void playerTurn(){
+        
+        
+        if (turnOver) {
+            if (turn == players.length) turn = 0;
+            else turn++;
+        }
+    }
     
 
     public void paint(Graphics g)
@@ -257,8 +262,6 @@ repaint();
             cards1[c].paint(g);
         }
     }
-
-
     public void mousePressed(MouseEvent e) {}
     public void mouseClicked(MouseEvent e) {}
     public void mouseEntered(MouseEvent e) {}
