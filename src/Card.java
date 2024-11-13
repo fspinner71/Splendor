@@ -4,43 +4,37 @@ import java.util.Arrays;
 import javax.imageio.ImageIO;
 
 public class Card {
-    public static int width;
-    public static int height;
+    public static final int WIDTH = 90;
+    public static int HEIGHT = 126;
     public static BufferedImage[] lvl1cards;
     public static BufferedImage[] lvl2cards;
     public static BufferedImage[] lvl3cards;
     public static BufferedImage[] numbers;
-    public static BufferedImage[] cardBacks;
     public static BufferedImage[] costCards;
-    public static BufferedImage[] costs;
+
     
     static {
         lvl1cards = new BufferedImage[5];
         lvl2cards = new BufferedImage[5];
         lvl3cards = new BufferedImage[5];
         numbers = new BufferedImage[10];
-        cardBacks = new BufferedImage[3];
         costCards = new BufferedImage[5];
-        costs = new BufferedImage[5];
-        costs = new BufferedImage[5];
         
         // black white green red blue 
         try {
-            cardBacks[0] = ImageIO.read(Patron.class.getResource("/Images/Level1Back.png"));
             lvl1cards[0] = ImageIO.read(Patron.class.getResource("/Images/BlackLevel1Card.png"));
             lvl1cards[1] = ImageIO.read(Patron.class.getResource("/Images/WhiteLevel1Card.png"));
             lvl1cards[2] = ImageIO.read(Patron.class.getResource("/Images/GreenLevel1Card.png"));
             lvl1cards[3] = ImageIO.read(Patron.class.getResource("/Images/RedLevel1Card.png"));
             lvl1cards[4] = ImageIO.read(Patron.class.getResource("/Images/BlueLevel1Card.png"));
-
-            cardBacks[1] = ImageIO.read(Patron.class.getResource("/Images/Level2Back.png"));
+            
+            
             lvl2cards[0] = ImageIO.read(Patron.class.getResource("/Images/BlackLevel2Card.png"));
             lvl2cards[1] = ImageIO.read(Patron.class.getResource("/Images/WhiteLevel2Card.png"));
             lvl2cards[2] = ImageIO.read(Patron.class.getResource("/Images/GreenLevel2Card.png"));
             lvl2cards[3] = ImageIO.read(Patron.class.getResource("/Images/RedLevel2Card.png"));
             lvl2cards[4] = ImageIO.read(Patron.class.getResource("/Images/BlueLevel2Card.png"));
 
-            cardBacks[2] = ImageIO.read(Patron.class.getResource("/Images/Level3Back.png"));
             lvl3cards[0] = ImageIO.read(Patron.class.getResource("/Images/BlackLevel3Card.png"));
             lvl3cards[1] = ImageIO.read(Patron.class.getResource("/Images/WhiteLevel3Card.png"));
             lvl3cards[2] = ImageIO.read(Patron.class.getResource("/Images/GreenLevel3Card.png"));
@@ -63,19 +57,11 @@ public class Card {
             costCards[2] = ImageIO.read(Card.class.getResource("/Images/GreenCost.png"));
             costCards[3] = ImageIO.read(Card.class.getResource("/Images/RedCost.png"));
             costCards[4] = ImageIO.read(Card.class.getResource("/Images/BlueCost.png"));
-            
-            costs[0] = ImageIO.read(Card.class.getResource("/Images/BlackCost.png"));
-            costs[1] = ImageIO.read(Card.class.getResource("/Images/WhiteCost.png"));
-            costs[2] = ImageIO.read(Card.class.getResource("/Images/GreenCost.png"));
-            costs[3] = ImageIO.read(Card.class.getResource("/Images/RedCost.png"));
-            costs[4] = ImageIO.read(Card.class.getResource("/Images/BlueCost.png"));
 
             
                 } catch (Exception e) {
             System.out.println("you trippin yo images yo");
         }
-        width = cardBacks[0].getWidth();
-        height = cardBacks[0].getHeight();
     }
 
 
@@ -92,7 +78,20 @@ public class Card {
         this.level = level;
         this.price = price;
         this.isFlipped = false;
-        button = new Button(0, 0, width/2, height/2, getImage());
+        button = new Button(0, 0, WIDTH, HEIGHT, getImage());
+        
+        switch(level)
+        {
+        case 1:
+        	button.setImage(lvl1cards[gemColor]);
+        	break;
+        case 2:
+        	button.setImage(lvl2cards[gemColor]);
+        	break;
+        case 3:
+        	button.setImage(lvl3cards[gemColor]);
+        	break;
+        }
     }
 
     public int getPoints(){
@@ -118,7 +117,7 @@ public class Card {
 	        return lvl3cards[gemColor];
 	    }
 	
-        return cardBacks[level-1]; //return card back if not flipped
+        return null;
 
     }
 
@@ -126,9 +125,6 @@ public class Card {
         return button;
     }
 
-    public void flip(){
-        this.isFlipped = (!isFlipped) ? true : false;
-    }
     public String toString() {
         return "Card is worth " +  points + " points. its, gem color is " + gemColor + " its level is " + level + " its price is " + Arrays.toString(price) ;
     }
@@ -140,44 +136,36 @@ public class Card {
     {
     	return (int)(button.getHeight()*scale);
     }
+    public void setPosition(int x, int y)
+    {
+    	button.setPosition(x, y);
+    }
+    public void scale(double x, double y)
+    {
+    	button.setSize((int)(button.getWidth() * x), (int)(button.getHeight() * y));
+    }
     public void paint(Graphics g) {
     	int x = button.getX();
     	int y = button.getY();
     	int width = button.getWidth();
     	int height = button.getHeight();
-    	
-        if(isFlipped)
+        
+        button.paint(g);
+        
+        if(points > 0)
         {
-        	switch(level)
-        	{
-        	case 1:
-        		button.setImage(lvl1cards[gemColor]);
-        		break;
-        	case 2:
-        		button.setImage(lvl2cards[gemColor]);
-        		break;
-        	case 3:
-        		button.setImage(lvl3cards[gemColor]);
-        		break;
-        	}
-        	
-        	button.paint(g);
-        	
         	g.drawImage(numbers[points], x, y + scaleY(0.04), scaleX(0.29), scaleY(0.2), null);
-        	
-        	int offset = 1;
-        	for(int i = 0; i < price.length; i++)
+        }
+        
+        int offset = 1;
+        for(int i = 0; i < price.length; i++)
+        {
+        	if(price[i] != 0)
         	{
-        		if(price[i] != 0)
-        		{
-        			g.drawImage(costCards[i], x + scaleX(0.04), y + height - scaleY(0.03) - offset * scaleY(0.14), scaleX(0.2), scaleY(0.14), null);
-        			g.drawImage(numbers[price[i]], x + scaleX(0.05), y + height - scaleY(0.02) - offset * scaleY(0.14), scaleX(0.19), scaleY(0.12), null);
-        			offset++;
-        		}
+        		g.drawImage(costCards[i], x + scaleX(0.04), y + height - scaleY(0.03) - offset * scaleY(0.14), scaleX(0.2), scaleY(0.14), null);
+        		g.drawImage(numbers[price[i]], x + scaleX(0.05), y + height - scaleY(0.02) - offset * scaleY(0.14), scaleX(0.19), scaleY(0.12), null);
+        		offset++;
         	}
-        } else {
-        	button.setImage(cardBacks[level - 1]);
-        	button.paint(g);
         }
     }
 }
