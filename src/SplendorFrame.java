@@ -32,10 +32,10 @@ public class SplendorFrame extends JFrame {
     }
     public void addEnd()
     {
-    	end = new SplendorEnd();
+    	//end = new SplendorEnd();
     	game.setVisible(false);
     	
     	remove(game);
-    	add(end);
+    	//add(end);
     }
 }

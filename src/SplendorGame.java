@@ -16,6 +16,10 @@ public class SplendorGame extends JPanel implements MouseListener{
     public static final int RED = 3;
     public static final int BLUE = 4;
     public static final int YELLOW = 5;
+    
+    private static final int CARDS = 0;
+    private static final int PATRONS = 1;
+    private static final int RESERVED = 2;
 
     private int turn;
     private boolean turnOver;
@@ -36,9 +40,11 @@ public class SplendorGame extends JPanel implements MouseListener{
     public int[] tokens;
     public int size;
     public int cardHeight, cardLength;
+    int currentPlayerViewing = CARDS;
     
     private static BufferedImage[] tokenImages;
     public static BufferedImage[] cardBacks;
+    public static BufferedImage playerImage;
     static
     {
     	cardBacks = new BufferedImage[3];
@@ -55,6 +61,8 @@ public class SplendorGame extends JPanel implements MouseListener{
 	        tokenImages[3] = ImageIO.read(Patron.class.getResource("/Images/RedToken.png"));
 	        tokenImages[4] = ImageIO.read(Patron.class.getResource("/Images/BlueToken.png"));
 	        tokenImages[5] = ImageIO.read(Patron.class.getResource("/Images/YellowToken.png"));
+	        
+	        playerImage = ImageIO.read(Patron.class.getResource("/Images/Player.png"));
     	} catch(Exception e)
     	{
     		System.out.println("Failed to load SplendorGame images");
@@ -71,6 +79,11 @@ public class SplendorGame extends JPanel implements MouseListener{
         makeLevel3();
         makePatrons();
         players = new Player[size];
+        
+        for(int i = 0; i < size; i++)
+        {
+        	players[i] = new Player();
+        }
         
         System.out.println(Arrays.toString(cards1)); //TEST PRINTLINE
         System.out.println(Arrays.toString(cards2)); //TEST PRINTLINE
@@ -357,9 +370,56 @@ repaint();
         	}
         }
         
-        patrons[0].setPosition(400, 100);
-        patrons[0].scale(3,  3);
-        patrons[0].paint(g);
+        int patronsX = 30;
+        int patronsY = 125;
+        int patronsPadding = 130;
+        int patronsRectHeight = patronsPadding * 3;
+        
+        
+        if(patrons[0] != null)
+        {
+        	patrons[0].setPosition(patronsX, patronsY + patronsRectHeight/2 - patronsPadding);
+        	patrons[0].paint(g);
+        }
+        if(patrons[1] != null)
+        {
+        	patrons[1].setPosition(patronsX, patronsY + patronsRectHeight/2);
+        	patrons[1].paint(g);
+        }
+        if(patrons[2] != null)
+        {
+        	patrons[2].setPosition(patronsX + patronsPadding, patronsY);
+        	patrons[2].paint(g);
+        }
+        if(patrons[3] != null)
+        {
+        	patrons[3].setPosition(patronsX + patronsPadding, patronsY + patronsRectHeight/2 - patronsPadding/2);
+        	patrons[3].paint(g);
+        }
+        if(patrons[4] != null)
+        {
+        	patrons[4].setPosition(patronsX + patronsPadding, patronsY + patronsRectHeight/2 + patronsPadding/2);
+        	patrons[4].paint(g);
+        }
+        
+        int currentTokensX = 900;
+        int currentTokensY = 10;
+        int currentTokenSize = 100;
+        int currentTokenPadding = 110;
+        int currentTokenTextSize = 50;
+        
+        int[] currentTokens = players[turn].getTokens();
+        
+        for(int i = 0; i < currentTokens.length; i++)
+        {
+        	if(currentTokens[i] >= 0)
+        	{
+        		int xPos = currentTokensX;
+        		int yPos = currentTokensY + currentTokenPadding * i;
+        		g.drawImage(tokenImages[i], xPos, currentTokensY + currentTokenPadding * i, currentTokenSize, currentTokenSize, null);
+        		g.drawImage(Card.numbers[currentTokens[i]], xPos + (currentTokenSize - currentTokenTextSize)/2, yPos + (currentTokenSize - currentTokenTextSize)/2, currentTokenTextSize, currentTokenTextSize, null);
+        	}
+        }
     }
 
 
