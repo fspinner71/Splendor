@@ -5,7 +5,7 @@ import java.awt.image.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 public class SplendorMenu extends JPanel implements MouseListener {
-    private static BufferedImage background;
+    public static BufferedImage background;
     private static BufferedImage titleText;
     private static BufferedImage startButtonImage;
     private static BufferedImage cat;
@@ -42,13 +42,6 @@ public class SplendorMenu extends JPanel implements MouseListener {
         g.drawImage(cat, -165, 460, 1100, 1100, null);
         
        startButton.paint(g);
-       
-       int[] price = {0,3,7,4,0};
-       Card c = new Card(5, SplendorGame.RED, 2, price);
-       c.flip();
-       c.getButton().setPosition(50, 50);
-       c.paint(g);
-       
     }
     
     public void mousePressed(MouseEvent e) 
