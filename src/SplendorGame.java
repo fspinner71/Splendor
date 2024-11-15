@@ -420,7 +420,25 @@ repaint();
     }
 
 
-    public void mousePressed(MouseEvent e) {}
+    public void mousePressed(MouseEvent e) {
+        if(e.getButton() != MouseEvent.BUTTON1) {return;}
+
+        int x = e.getX();
+    	int y = e.getY();
+
+        for (int i = 0; i < tokenButtons.length - 5; i++){ // Normal tokens
+            if (tokenButtons[i].isInside(x, y)) {
+                //if (tokens[i] <= 2)
+                tokens[i]--;
+                //player[turn]
+                players[turn].addToken(i);
+            }
+        }
+
+        if (tokenButtons[5].isInside(x, y)){ // Golden tokens, WIP
+            tokens[5]--;
+        }
+    }
     public void mouseClicked(MouseEvent e) {}
     public void mouseEntered(MouseEvent e) {}
     public void mouseExited(MouseEvent e) {}

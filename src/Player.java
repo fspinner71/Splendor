@@ -80,4 +80,8 @@ public class Player {
         patrons.add(p); //if you can buy add the patron to the player 
         return true; //return true to the game
 }
+
+public void addToken(int colour){
+    tokens[colour]++;
+}
 }
