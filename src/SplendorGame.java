@@ -428,7 +428,7 @@ repaint();
 
         for (int i = 0; i < tokenButtons.length - 5; i++){ // Normal tokens
             if (tokenButtons[i].isInside(x, y)) {
-                //if (tokens[i] <= 2)
+                if (tokens[i] <= 2) errorScreen();
                 tokens[i]--;
                 //player[turn]
                 players[turn].addToken(i);
