@@ -41,6 +41,8 @@ public class SplendorGame extends JPanel implements MouseListener{
     public int size;
     public int cardHeight, cardLength;
     int currentPlayerViewing = CARDS;
+    public int[] tokenClickCount;
+    public int tokenClickCounter;
     
     private static BufferedImage[] tokenImages;
     public static BufferedImage[] cardBacks;
@@ -93,6 +95,8 @@ public class SplendorGame extends JPanel implements MouseListener{
         draw2Button = new Button(0, 0, Card.WIDTH, Card.HEIGHT, cardBacks[1]);
         draw3Button = new Button(0, 0, Card.WIDTH, Card.HEIGHT, cardBacks[2]);
         
+        tokenClickCount = new int[6];
+        tokenClickCounter = 0;
         tokenButtons = new Button[6];
         for(int i = 0; i < tokenButtons.length; i++)
         {
@@ -419,6 +423,9 @@ repaint();
         }
     }
 
+    public void errorScreen(){
+
+    }
 
     public void mousePressed(MouseEvent e) {
         if(e.getButton() != MouseEvent.BUTTON1) {return;}
@@ -427,11 +434,20 @@ repaint();
     	int y = e.getY();
 
         for (int i = 0; i < tokenButtons.length - 5; i++){ // Normal tokens
-            if (tokenButtons[i].isInside(x, y)) {
-                if (tokens[i] <= 2) errorScreen();
-                tokens[i]--;
-                //player[turn]
-                players[turn].addToken(i);
+            if(tokenButtons[i].isInside(x, y)) {
+                if (tokenClickCounter == 0){
+                    if (tokens[i] <= 2) errorScreen();
+                    tokens[i]--;
+                    players[turn].addToken(i);
+                } else if (tokenClickCounter == 2) {
+                    if (tokenClickCount[i] == 1)
+                        if (tokens[i] <= 4) errorScreen();
+                    
+                    tokens[i]--;
+                    players[turn].addToken(i);
+                } else {
+                    if (tokenClickCount[i] == 2) errorScreen();
+                }
             }
         }
 
