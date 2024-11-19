@@ -437,13 +437,15 @@ public class SplendorGame extends JPanel implements MouseListener{
     	int y = e.getY();
 
         for (int i = 0; i < tokenButtons.length - 1; i++){ // Normal tokens
-            if(tokenButtons[i].isInside(x, y)) {
-                System.out.println("pluh");
+            if (tokenButtons[i].isInside(x, y)) {
                 if (tokenClickCounter == 0){
                     if (tokens[i] == 0) errorScreen();
-                    tokens[i]--;
-                    players[turn].addToken(i);
-                    tokenClickCount[i]++;
+                    else {
+                        tokens[i]--;
+                        players[turn].addToken(i);
+                        
+                        tokenClickCount[i]++;
+                    }
                 } else if (tokenClickCounter == 1) {
                     if (tokenClickCount[i] == 1){
                         if (tokens[i] < 4) errorScreen();
@@ -454,10 +456,13 @@ public class SplendorGame extends JPanel implements MouseListener{
                     players[turn].addToken(i);
                     tokenClickCount[i]++;
                 } else {
-                    if (tokenClickCount[i] == 1 && tokens[i] == 0) errorScreen();
-                    tokens[i]--;
-                    players[turn].addToken(i);
-                    tokenClickCount[i]++;
+                    if (tokenClickCount[i] == 1 || tokens[i] == 0 || !canClickMoreTokens) errorScreen();
+                    else {
+                        tokens[i]--;
+                        players[turn].addToken(i);
+                        tokenClickCount[i]++;
+                        canClickMoreTokens = false;
+                    }
                 }
             }
 
@@ -469,6 +474,8 @@ public class SplendorGame extends JPanel implements MouseListener{
         }
 
         //for ()
+
+        repaint();
     }
     public void mouseClicked(MouseEvent e) {}
     public void mouseEntered(MouseEvent e) {}
