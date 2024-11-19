@@ -426,8 +426,22 @@ public class SplendorGame extends JPanel implements MouseListener{
         }
     }
 
-    public void errorScreen(){
 
+    public void nextTurn() { //turn moves 0-3 
+        if(turn == players.length-1) {
+            turn = 0;
+        }
+        else {
+            turn++;
+        }
+        tokenClickCount = new int[6]; //reset token vairalbes so next player can click stuff
+        tokenClickCounter = 0;
+        canClickMoreTokens = true;
+
+    }
+
+    public void errorScreen(){
+System.out.println("error panel pops up");
     }
 
     public void mousePressed(MouseEvent e) {
