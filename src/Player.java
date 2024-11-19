@@ -2,14 +2,14 @@ import java.util.*;
 
 public class Player {
     private int[] tokens;
-    private int[] gems;
+
     private ArrayList<Card>[] cards;
     private ArrayList<Card> reservedCards;
     private ArrayList<Patron> patrons;
 
     public Player(){
         this.tokens = new int[6];
-        this.gems = new int[5];
+   
         this.cards = new ArrayList[5];
         for (int i = 0; i < 5; i++)
             this.cards[i] = new ArrayList<Card>();
@@ -46,6 +46,10 @@ public class Player {
         return tokens;
     }
     public int[] getGems() { 
+        int[] gems = new int[5];
+        for(int c= 0; c < gems.length; c++) {
+            gems[c]=cards[c].size();
+        }
         return gems;
     }
 
@@ -54,25 +58,26 @@ public class Player {
         int[] price = c.getPrice();
 
         for (int i = 0; i < 5; i++) { // check if you have sufficient amounts of each gem to buy this card
-            if (this.gems[i] + this.tokens[i] < price[i])
+            if (this.getGems()[i] + this.tokens[i] < price[i])
                 return false;
         }
 
-        for (int i = 0; i < 5; i++) {
-            int num_to_remove = price[i] - this.gems[i];
+        for (int i = 0; i < 5; i++) { //remove tokens
+            int num_to_remove = price[i] - this.getGems()[i];
+            if(num_to_remove > 0) {
             this.tokens[i] -= num_to_remove;
+            }
         }
 
-        this.gems[c.getGem()]++;
+      //add card
         cards[c.getGem()].add(c);
-        
         return true;
     }
     
     public boolean buyPatron(Patron p) {  
         int[] price = p.getPrice(); //price of patron
         for(int c = 0; c < price.length; c++) { //check if you can buy
-            if(price[c] > gems[c]) {
+            if(price[c] > getGems()[c]) {
                 return false;
             }
 

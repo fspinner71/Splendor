@@ -44,7 +44,7 @@ public class SplendorGame extends JPanel implements MouseListener{
     public int[] tokenClickCount;
     public int tokenClickCounter;
     private boolean canClickMoreTokens;
-    
+    public boolean canBuyCard;
     private static BufferedImage[] tokenImages;
     public static BufferedImage[] cardBacks;
     public static BufferedImage playerImage;
@@ -109,6 +109,7 @@ public class SplendorGame extends JPanel implements MouseListener{
         turnOver = false; //set turn to 0
         gameStarted = true;
         gameInProgress = true;
+        canBuyCard = true;
         repaint();
         addMouseListener(this);
     }
@@ -443,14 +444,51 @@ public class SplendorGame extends JPanel implements MouseListener{
     public void errorScreen(){
 System.out.println("error panel pops up");
     }
+    
 
+    public void buyCard(Card c, int index) {
+        boolean x = players[turn].buyCard(c);
+        if(x == true) { //if player does buy card
+            int[] price = c.getPrice();
+            int[] gems = players[turn].getGems();
+            
+            gems[c.getGem()]--; //remove one gem from the color that the card was boight bc it was just added ykyk
+            canBuyCard = false;
+            for (int i = 0; i < 5; i++) { //add back tokens to game
+                
+                int add = price[i] - gems[i];
+                if(add > 0) {
+                this.tokens[i] += add;
+                System.out.println("added " + add + " " + i);
+                }
+            }
+           // canBuyCard = false; //make it no longer able to buy card
+            int level = c.getLevel(); //remove card and replace it 
+            if(level ==1) {
+                cards1[index] = draw1.get(0);
+                draw1.remove(0);
+            }
+            if(level ==2) {
+                cards2[index] = draw2.get(0);
+                draw2.remove(0);
+            }
+            if(level ==3) {
+                cards3[index] = draw3.get(0);
+                draw3.remove(0);
+            }
+        }
+        if(x==false) {
+            errorScreen();
+        }
+
+    }
     public void mousePressed(MouseEvent e) {
         if(e.getButton() != MouseEvent.BUTTON1) {return;}
 
         int x = e.getX();
     	int y = e.getY();
 
-        for (int i = 0; i < tokenButtons.length - 1; i++){ // Normal tokens
+        for (int i = 0; i < tokenButtons.length - 1; i++){ // Clicking Normal tokens
             if (tokenButtons[i].isInside(x, y)) {
                 if (tokenClickCounter == 0){
                     if (tokens[i] == 0) errorScreen();
@@ -487,7 +525,43 @@ System.out.println("error panel pops up");
             tokens[5]--;
         }
 
-        //for ()
+       
+        for(int c = 0; c < cards1.length; c++) { //if u click lvl 1 card
+
+            if(canBuyCard) { 
+            if(cards1[c].getButton().isInside(x,y)) {
+            buyCard(cards1[c], c);
+            }
+        }
+        else { //if canbuycard is false u go error
+            errorScreen();
+        }
+           
+        }
+        for(int c = 0; c < cards2.length; c++) { //if u click lvl 2 card
+
+            if(canBuyCard) { 
+                if(cards2[c].getButton().isInside(x,y)) {
+                buyCard(cards2[c], c);
+                }
+            }
+            else { //if canbuycard is false u go error
+                errorScreen();
+            }
+        }
+        for(int c = 0; c < cards3.length; c++) { //if u click lvl 2 card
+
+            if(canBuyCard) { 
+                if(cards3[c].getButton().isInside(x,y)) {
+                buyCard(cards3[c], c);
+                }
+            }
+            else { //if canbuycard is false u go error
+                errorScreen();
+            }
+        
+    }
+
 
         repaint();
     }
