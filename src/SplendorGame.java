@@ -43,6 +43,7 @@ public class SplendorGame extends JPanel implements MouseListener{
     int currentPlayerViewing = CARDS;
     public int[] tokenClickCount;
     public int tokenClickCounter;
+    private boolean canClickMoreTokens;
     
     private static BufferedImage[] tokenImages;
     public static BufferedImage[] cardBacks;
@@ -98,6 +99,7 @@ public class SplendorGame extends JPanel implements MouseListener{
         tokenClickCount = new int[6];
         tokenClickCounter = 0;
         tokenButtons = new Button[6];
+        canClickMoreTokens = true;
         for(int i = 0; i < tokenButtons.length; i++)
         {
         	tokenButtons[i] = new Button(0, 0, 100, 100, tokenImages[i]);
@@ -433,22 +435,31 @@ repaint();
         int x = e.getX();
     	int y = e.getY();
 
-        for (int i = 0; i < tokenButtons.length - 5; i++){ // Normal tokens
+        for (int i = 0; i < tokenButtons.length - 1; i++){ // Normal tokens
             if(tokenButtons[i].isInside(x, y)) {
                 if (tokenClickCounter == 0){
-                    if (tokens[i] <= 2) errorScreen();
+                    if (tokens[i] == 0) errorScreen();
                     tokens[i]--;
                     players[turn].addToken(i);
-                } else if (tokenClickCounter == 2) {
-                    if (tokenClickCount[i] == 1)
-                        if (tokens[i] <= 4) errorScreen();
+                    tokenClickCount[i]++;
+                } else if (tokenClickCounter == 1) {
+                    if (tokenClickCount[i] == 1){
+                        if (tokens[i] < 4) errorScreen();
+                        canClickMoreTokens = false;
+                    }
                     
                     tokens[i]--;
                     players[turn].addToken(i);
+                    tokenClickCount[i]++;
                 } else {
-                    if (tokenClickCount[i] == 2) errorScreen();
+                    if (tokenClickCount[i] == 1 && tokens[i] == 0) errorScreen();
+                    tokens[i]--;
+                    players[turn].addToken(i);
+                    tokenClickCount[i]++;
                 }
             }
+
+            tokenClickCounter++;
         }
 
         if (tokenButtons[5].isInside(x, y)){ // Golden tokens, WIP
