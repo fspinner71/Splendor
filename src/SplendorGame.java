@@ -109,9 +109,10 @@ public class SplendorGame extends JPanel implements MouseListener{
         turnOver = false; //set turn to 0
         gameStarted = true;
         gameInProgress = true;
-repaint();
-      
-            }
+        repaint();
+        addMouseListener(this);
+    }
+
     public void makeTokens() {
 
         tokens = new int[6]; //initalize tokens and add 6 of each except yellow
@@ -437,6 +438,7 @@ repaint();
 
         for (int i = 0; i < tokenButtons.length - 1; i++){ // Normal tokens
             if(tokenButtons[i].isInside(x, y)) {
+                System.out.println("pluh");
                 if (tokenClickCounter == 0){
                     if (tokens[i] == 0) errorScreen();
                     tokens[i]--;
@@ -465,6 +467,8 @@ repaint();
         if (tokenButtons[5].isInside(x, y)){ // Golden tokens, WIP
             tokens[5]--;
         }
+
+        //for ()
     }
     public void mouseClicked(MouseEvent e) {}
     public void mouseEntered(MouseEvent e) {}
