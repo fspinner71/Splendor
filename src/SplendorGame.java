@@ -516,9 +516,8 @@ System.out.println("error panel pops up");
                         canClickMoreTokens = false;
                     }
                 }
+                tokenClickCounter++;
             }
-
-            tokenClickCounter++;
         }
 
         if (tokenButtons[5].isInside(x, y)){ // Golden tokens, WIP
