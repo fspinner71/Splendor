@@ -16,27 +16,6 @@ public class Player {
         
         this.reservedCards = new ArrayList<Card>();
         this.patrons = new ArrayList<Patron>();
-        
-        for(int i = 0; i < 5; i++)
-        {
-        	int[] price = {1,1,0,0,0};
-        	this.reservedCards.add(new Card(1, i, 2, price));
-        }
-        for(int i = 0; i < 5; i++)
-        {
-        	int[] price = {1,1,0,0,0};
-        	this.cards[i].add(new Card(3, i, 2, price));
-        	this.cards[i].add(new Card(4, i, 2, price));
-        	this.cards[i].add(new Card(5, i, 2, price));
-        	this.cards[i].add(new Card(5, i, 2, price));
-        	this.cards[i].add(new Card(5, i, 2, price));
-        	this.cards[i].add(new Card(5, i, 2, price));
-        }
-        for(int i = 0; i < 5; i++)
-        {
-        	int[] price = {1,1,0,0,0};
-        	this.patrons.add(new Patron(1, price, 2));
-        }
     }
 
     public int getScore(){

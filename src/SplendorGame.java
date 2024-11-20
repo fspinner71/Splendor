@@ -40,10 +40,10 @@ public class SplendorGame extends JPanel implements MouseListener{
     public int[] tokens;
     public int size;
     public int cardHeight, cardLength;
-    private int currentPlayerViewing = RESERVED;
+    private int currentPlayerViewing = CARDS;
     private int otherPlayerViewing = CARDS;
     private int otherPlayer = 1;
-    private boolean showOtherTab = true;
+    private boolean showOtherTab = false;
     public int[] tokenClickCount;
     public int tokenClickCounter;
     private Button otherTabButton;
@@ -601,11 +601,14 @@ repaint();
         	case CARDS:
         		int currentCardsX = 40;
             	int currentCardsY = 570;
-            	int currentCardsPaddingX = 130;
+            	int currentCardsPadding = 60;
             	int currentCardsPaddingExtra = 15;
             	double currentCardsScale = 0.8;
             	
             	ArrayList<Card>[] currentCards = players[otherPlayer].getCards();
+            	
+            	int numNewColors = 0;
+            	int numExtraCards = 0;
             	
             	for(int i = 0; i < currentCards.length; i++)
             	{
@@ -613,15 +616,50 @@ repaint();
             		{
             			Card card = currentCards[i].get(j);
             			card.scale(currentCardsScale, currentCardsScale);
-            			card.setPosition(currentCardsX + currentCardsPaddingX * i + currentCardsPaddingExtra * j, currentCardsY);
+            			card.setPosition(currentCardsX + numNewColors * currentCardsPadding + numExtraCards * currentCardsPaddingExtra, currentCardsY);
             			card.paint(g);
+            			numExtraCards++;
+            		}
+            		if(currentCards[i].size() > 0)
+            		{
+            			numNewColors++;
             		}
             	}
         		break;
         	case PATRONS:
         		
+        		int currentPatronsX = 40;
+            	int currentPatronsY = 570;
+            	int currentPatronsPadding = 120;
+            	double currentPatronsScale = 0.8;
+            	
+            	ArrayList<Patron> currentPatrons = players[otherPlayer].getPatrons();
+            	
+            	for(int i = 0; i < currentPatrons.size(); i++)
+            	{
+            			Patron patron = currentPatrons.get(i);
+            			patron.scale(currentPatronsScale, currentPatronsScale);
+            			patron.setPosition(currentPatronsX+ currentPatronsPadding * i, currentPatronsY);
+            			patron.paint(g);
+            	}
+        		
         		break;
         	case RESERVED:
+        		
+        		int currentReservedX = 40;
+            	int currentReservedY = 570;
+            	int currentReservedPadding = 100;
+            	double currentReservedScale = 0.8;
+            	
+            	ArrayList<Card> currentReserved = players[otherPlayer].getReservedCards();
+            	
+            	for(int i = 0; i < currentReserved.size(); i++)
+            	{
+            			Card card = currentReserved.get(i);
+            			card.scale(currentReservedScale, currentReservedScale);
+            			card.setPosition(currentReservedX + currentReservedPadding * i, currentReservedY);
+            			card.paint(g);
+            	}
         		
         		break;
         	}
