@@ -120,7 +120,10 @@ public class Card {
         return null;
 
     }
+    public int getLevel() {
 
+        return level;
+    }
     public Button getButton() {
         return button;
     }
