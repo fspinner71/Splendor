@@ -291,7 +291,7 @@ repaint();
         draw2.remove(4);
 
     }
-
+    
     public void makeLevel3() {
         String line;
         cards3 = new Card[4]; //create stuff
@@ -666,6 +666,26 @@ repaint();
         }
     }
 
+<<<<<<< Updated upstream
+=======
+
+    public void nextTurn() { //turn moves 0-3  //buy patron too
+
+        if(turn == players.length-1) {
+            turn = 0;
+        }
+        else {
+            turn++;
+        }
+        tokenClickCount = new int[6]; //reset token vairalbes so next player can click stuff
+        tokenClickCounter = 0;
+        canClickMoreTokens = true;
+        canBuyCard = false;
+
+
+    }
+
+>>>>>>> Stashed changes
     public void errorScreen(){
 
     }
@@ -692,6 +712,8 @@ repaint();
                     if (tokenClickCount[i] == 2) errorScreen();
                 }
             }
+
+            tokenClickCounter++;
         }
 
         if (tokenButtons[5].isInside(x, y)){ // Golden tokens, WIP
