@@ -1,4 +1,7 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.*;
+import java.awt.image.*;
 
 public class SplendorFrame extends JFrame {
     //Width and height
@@ -17,6 +20,15 @@ public class SplendorFrame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         menu = new SplendorMenu(this);
+        
+        try
+        {
+        	BufferedImage icon = ImageIO.read(Card.class.getResource("/Images/Icon.png"));
+            setIconImage(icon);
+        } catch(Exception e)
+        {
+        	System.out.println("Could not load icon");
+        }
         
         add(menu);
         
