@@ -40,17 +40,31 @@ public class SplendorGame extends JPanel implements MouseListener{
     public int[] tokens;
     public int size;
     public int cardHeight, cardLength;
-    int currentPlayerViewing = CARDS;
+    private int currentPlayerViewing = RESERVED;
+    private int otherPlayerViewing = CARDS;
+    private int otherPlayer = 1;
+    private boolean showOtherTab = true;
     public int[] tokenClickCount;
     public int tokenClickCounter;
+    private Button otherTabButton;
+    private Button otherLeftButton;
+    private Button otherRightButton;
     
     private static BufferedImage[] tokenImages;
     public static BufferedImage[] cardBacks;
+    private static BufferedImage[] playerTabs;
+    private static BufferedImage[] otherTabs;
+    private static BufferedImage leftButton;
+    private static BufferedImage rightButton;
+    private static BufferedImage upButton;
+    private static BufferedImage downButton;
     public static BufferedImage playerImage;
     static
     {
     	cardBacks = new BufferedImage[3];
     	tokenImages = new BufferedImage[6];
+    	playerTabs = new BufferedImage[3];
+    	otherTabs = new BufferedImage[3];
     	try
     	{
 	    	cardBacks[0] = ImageIO.read(Patron.class.getResource("/Images/Level1Back.png"));
@@ -63,6 +77,19 @@ public class SplendorGame extends JPanel implements MouseListener{
 	        tokenImages[3] = ImageIO.read(Patron.class.getResource("/Images/RedToken.png"));
 	        tokenImages[4] = ImageIO.read(Patron.class.getResource("/Images/BlueToken.png"));
 	        tokenImages[5] = ImageIO.read(Patron.class.getResource("/Images/YellowToken.png"));
+	        
+	        playerTabs[CARDS] = ImageIO.read(Patron.class.getResource("/Images/PlayerTabCards.png"));
+	        playerTabs[PATRONS] = ImageIO.read(Patron.class.getResource("/Images/PlayerTabPatrons.png"));
+	        playerTabs[RESERVED] = ImageIO.read(Patron.class.getResource("/Images/PlayerTabReserved.png"));
+	        
+	        otherTabs[CARDS] = ImageIO.read(Patron.class.getResource("/Images/OtherTabCards.png"));
+	        otherTabs[PATRONS] = ImageIO.read(Patron.class.getResource("/Images/OtherTabPatrons.png"));
+	        otherTabs[RESERVED] = ImageIO.read(Patron.class.getResource("/Images/OtherTabReserved.png"));
+	        
+	        leftButton = ImageIO.read(Patron.class.getResource("/Images/LeftButton.png"));
+	        rightButton = ImageIO.read(Patron.class.getResource("/Images/RightButton.png"));
+	        upButton = ImageIO.read(Patron.class.getResource("/Images/UpButton.png"));
+	        downButton = ImageIO.read(Patron.class.getResource("/Images/DownButton.png"));
 	        
 	        playerImage = ImageIO.read(Patron.class.getResource("/Images/Player.png"));
     	} catch(Exception e)
@@ -94,6 +121,11 @@ public class SplendorGame extends JPanel implements MouseListener{
         draw1Button = new Button(0, 0, Card.WIDTH, Card.HEIGHT, cardBacks[0]);
         draw2Button = new Button(0, 0, Card.WIDTH, Card.HEIGHT, cardBacks[1]);
         draw3Button = new Button(0, 0, Card.WIDTH, Card.HEIGHT, cardBacks[2]);
+        
+        otherTabButton  = new Button(0, 0, 25, 25, upButton);
+        
+        otherLeftButton = new Button(0, 0, 40, 40, leftButton);
+        otherRightButton = new Button(0, 0, 40, 40, rightButton);
         
         tokenClickCount = new int[6];
         tokenClickCounter = 0;
@@ -309,7 +341,7 @@ repaint();
         g.drawImage(SplendorMenu.background, 0, 0, getWidth(), getHeight(), null);
         
         //VARIABLES FOR WHERE CARDS SHOULD BE PLACED
-        int cardsX = 300;
+        int cardsX = 400;
         int cardsY = 120;
         
         int paddingX = 100;
@@ -352,7 +384,7 @@ repaint();
         }
         
         //VARIABLES FOR WHERE TO PLACE TOKENS
-        int tokensX = 200;
+        int tokensX = 250;
         int tokensY = 10;
         
         int tokenPadding = 110;
@@ -371,7 +403,7 @@ repaint();
         	}
         }
         
-        int patronsX = 30;
+        int patronsX = 100;
         int patronsY = 125;
         int patronsPadding = 130;
         int patronsRectHeight = patronsPadding * 3;
@@ -403,7 +435,7 @@ repaint();
         	patrons[4].paint(g);
         }
         
-        int currentTokensX = 900;
+        int currentTokensX = 960;
         int currentTokensY = 10;
         int currentTokenSize = 100;
         int currentTokenPadding = 110;
@@ -417,8 +449,181 @@ repaint();
         	{
         		int xPos = currentTokensX;
         		int yPos = currentTokensY + currentTokenPadding * i;
-        		g.drawImage(tokenImages[i], xPos, currentTokensY + currentTokenPadding * i, currentTokenSize, currentTokenSize, null);
+        		g.drawImage(tokenImages[i], xPos, yPos, currentTokenSize, currentTokenSize, null);
         		g.drawImage(Card.numbers[currentTokens[i]], xPos + (currentTokenSize - currentTokenTextSize)/2, yPos + (currentTokenSize - currentTokenTextSize)/2, currentTokenTextSize, currentTokenTextSize, null);
+        	}
+        }
+        
+        int viewTabX = 1080;
+        int viewTabY = 75;
+        int viewTabWidth = 200;
+        int viewTabHeight = 595;
+        
+        g.drawImage(playerTabs[currentPlayerViewing], viewTabX, viewTabY, viewTabWidth, viewTabHeight, null);
+        
+        int currentPlayerX = 1070;
+        int currentPlayerY = 20;
+        int currentPlayerHeight = 40;
+        int currentPlayerWidth = 135;
+        int currentPlayerSpace = 10;
+        
+        g.drawImage(playerImage, currentPlayerX, currentPlayerY, currentPlayerWidth, currentPlayerHeight, null);
+        g.drawImage(Card.numbers[turn], currentPlayerX + currentPlayerWidth + currentPlayerSpace, currentPlayerY, currentPlayerHeight, currentPlayerHeight, null);
+        
+        int otherTokensX = 70;
+        int otherTokenxY = 550;
+        int otherTokensSize = 100;
+        int otherTokensPadding = 110;
+        int otherTokensTextSize = 50;
+        
+        int[] otherTokens = players[otherPlayer].getTokens();
+        
+        for(int i = 0; i < otherTokens.length; i++)
+        {
+        	if(otherTokens[i] >= 0)
+        	{
+        		int xPos = otherTokensX + otherTokensPadding * i;
+        		int yPos = otherTokenxY;
+        		g.drawImage(tokenImages[i], xPos, yPos, otherTokensSize, otherTokensSize, null);
+        		g.drawImage(Card.numbers[otherTokens[i]], xPos + (otherTokensSize - otherTokensTextSize)/2, yPos + (otherTokensSize - otherTokensTextSize)/2, otherTokensTextSize, otherTokensTextSize, null);
+        	}
+        }
+        
+        int otherPlayerX = 20;
+        int otherPlayerY = 485;
+        int otherPlayerHeight = 40;
+        int otherPlayerWidth = 135;
+        int otherPlayerSpace = 10;
+        
+        g.drawImage(playerImage, otherPlayerX, otherPlayerY, otherPlayerWidth, otherPlayerHeight, null);
+        g.drawImage(Card.numbers[otherPlayer], otherPlayerX + otherPlayerWidth + otherPlayerSpace, otherPlayerY, otherPlayerHeight, otherPlayerHeight, null);
+        
+        int scrollButtonsY = 580;
+        int leftButtonX = 25;
+        int rightButtonX = 725;
+        
+        otherLeftButton.setPosition(leftButtonX, scrollButtonsY);
+        otherRightButton.setPosition(rightButtonX, scrollButtonsY);
+        
+        otherLeftButton.paint(g);
+        otherRightButton.paint(g);
+        
+        int otherTabX = 10;
+        int otherTabY = 520;
+        int otherTabWidth = 700;
+        int otherTabHeight = 200;
+        
+        int otherTabHiddenY = 650;
+        
+        int tabButtonX = 325;
+        int tabButtonY = 525;
+        int tabButtonHiddenY = 655;
+        
+        if(showOtherTab)
+        {
+        	g.drawImage(otherTabs[otherPlayerViewing], otherTabX, otherTabY, otherTabWidth, otherTabHeight, null);
+        	otherTabButton.setImage(downButton);
+        	otherTabButton.setPosition(tabButtonX, tabButtonY);
+        	otherTabButton.paint(g);
+        	
+        } else {
+        	g.drawImage(otherTabs[otherPlayerViewing], otherTabX, otherTabHiddenY, otherTabWidth, otherTabHeight, null);
+        	otherTabButton.setImage(upButton);
+        	otherTabButton.setPosition(tabButtonX,  tabButtonHiddenY);
+        	otherTabButton.paint(g);
+        }
+        
+        switch(currentPlayerViewing)
+        {
+        case CARDS:
+        	
+        	int currentCardsX = 1120;
+        	int currentCardsY = 100;
+        	int currentCardsPaddingX = 20;
+        	int currentCardsPaddingY = 110;
+        	double currentCardsScale = 0.8;
+        	
+        	ArrayList<Card>[] currentCards = players[turn].getCards();
+        	
+        	for(int i = 0; i < currentCards.length; i++)
+        	{
+        		for(int j = 0; j < currentCards[i].size(); j++)
+        		{
+        			Card card = currentCards[i].get(j);
+        			card.scale(currentCardsScale, currentCardsScale);
+        			card.setPosition(currentCardsX + currentCardsPaddingX * j, currentCardsY + currentCardsPaddingY * i);
+        			card.paint(g);
+        		}
+        	}
+        	
+        	break;
+        case PATRONS:
+        	int currentPatronsX = 1140;
+        	int currentPatronsY = 100;
+        	int currentPatronsPadding = 110;
+        	double currentPatronsScale = 0.8;
+        	
+        	ArrayList<Patron> currentPatrons = players[turn].getPatrons();
+        	
+        	for(int i = 0; i < currentPatrons.size(); i++)
+        	{
+        			Patron patron = currentPatrons.get(i);
+        			patron.scale(currentPatronsScale, currentPatronsScale);
+        			patron.setPosition(currentPatronsX, currentPatronsY + currentPatronsPadding * i);
+        			patron.paint(g);
+        	}
+        	
+        	break;
+        case RESERVED:
+        	
+        	int currentReservedX = 1155;
+        	int currentReservedY = 100;
+        	int currentReservedPadding = 110;
+        	double currentReservedScale = 0.8;
+        	
+        	ArrayList<Card> currentReserved = players[turn].getReservedCards();
+        	
+        	for(int i = 0; i < currentReserved.size(); i++)
+        	{
+        			Card card = currentReserved.get(i);
+        			card.scale(currentReservedScale, currentReservedScale);
+        			card.setPosition(currentReservedX, currentReservedY + currentReservedPadding * i);
+        			card.paint(g);
+        	}
+        	
+        	break;
+        }
+        
+        if(showOtherTab)
+        {
+        	switch(otherPlayerViewing)
+        	{
+        	case CARDS:
+        		int currentCardsX = 40;
+            	int currentCardsY = 570;
+            	int currentCardsPaddingX = 130;
+            	int currentCardsPaddingExtra = 15;
+            	double currentCardsScale = 0.8;
+            	
+            	ArrayList<Card>[] currentCards = players[otherPlayer].getCards();
+            	
+            	for(int i = 0; i < currentCards.length; i++)
+            	{
+            		for(int j = 0; j < currentCards[i].size(); j++)
+            		{
+            			Card card = currentCards[i].get(j);
+            			card.scale(currentCardsScale, currentCardsScale);
+            			card.setPosition(currentCardsX + currentCardsPaddingX * i + currentCardsPaddingExtra * j, currentCardsY);
+            			card.paint(g);
+            		}
+            	}
+        		break;
+        	case PATRONS:
+        		
+        		break;
+        	case RESERVED:
+        		
+        		break;
         	}
         }
     }
