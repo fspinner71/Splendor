@@ -120,4 +120,8 @@ public class Player {
 public void addToken(int colour){
     tokens[colour]++;
 }
+
+public void addReservedCards(Card c){
+    this.reservedCards.add(c);
+}
 }
