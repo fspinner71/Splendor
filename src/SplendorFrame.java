@@ -1,7 +1,6 @@
+import java.awt.image.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.*;
-import java.awt.image.*;
 
 public class SplendorFrame extends JFrame {
     //Width and height
