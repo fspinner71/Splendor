@@ -51,6 +51,7 @@ public class SplendorGame extends JPanel implements MouseListener{
     private Button otherRightButton;
     private boolean canClickMoreTokens;
     public boolean canBuyCard;
+    private boolean tokenerror; //token erorr 
     private static BufferedImage[] tokenImages;
     public static BufferedImage[] cardBacks;
     private static BufferedImage[] playerTabs;
@@ -142,6 +143,7 @@ public class SplendorGame extends JPanel implements MouseListener{
         gameInProgress = true;
         canBuyCard = true;
         canClickMoreTokens = true;
+        tokenerror = false;
         repaint();
         addMouseListener(this);
     }
@@ -654,7 +656,7 @@ System.out.println("error panel pops up");
         if(x == true) { //if player does buy card
             int[] price = c.getPrice();
             int[] gems = players[turn].getGems();
-            nextTurn();
+            
             gems[c.getGem()]--; //remove one gem from the color that the card was boight bc it was just added ykyk
             canBuyCard = false;
             for (int i = 0; i < 5; i++) { //add back tokens to game
@@ -679,6 +681,7 @@ System.out.println("error panel pops up");
                 cards3[index] = draw3.get(0);
                 draw3.remove(0);
             }
+            nextTurn();
         }
         if(x==false) {
             errorScreen();
@@ -702,7 +705,7 @@ System.out.println("error panel pops up");
         for (int i = 0; i < tokenButtons.length - 1; i++){ // Clicking Normal tokens
             if (tokenButtons[i].isInside(x, y)) {
                 if (tokenClickCounter == 0){
-                    if (tokens[i] == 0 || players[turn].getTotalTokenCount() >= 9) errorScreen();
+                    if (tokens[i] == 0 || players[turn].getTotalTokenCount() >= 9) { errorScreen(); tokenerror = true;}
                     else {
                         tokens[i]--;
                         players[turn].addToken(i);
@@ -711,27 +714,40 @@ System.out.println("error panel pops up");
                     }
                 } else if (tokenClickCounter == 1) {
                     if (tokenClickCount[i] == 1){
-                        if (tokens[i] < 4) errorScreen();
+                        if (tokens[i] < 3) { errorScreen(); break;} //3 cuz if u draw one from 4 itll be 3yknow
+                        else {
+
+                        tokens[i]--;
+                        players[turn].addToken(i);
+                        tokenClickCount[i]++;
                         canClickMoreTokens = false;
                         nextTurn();
+                        System.out.println("draws 2");
+                        break;
+                        }
                     }
                     
-                    if (players[turn].getTotalTokenCount() >= 9) errorScreen();
+                    if (players[turn].getTotalTokenCount() >= 9) { errorScreen(); break;}
 
                     tokens[i]--;
                     players[turn].addToken(i);
                     tokenClickCount[i]++;
+                    
                 } else {
-                    if (tokenClickCount[i] == 1 || tokens[i] == 0 || !canClickMoreTokens) errorScreen();
+                    if (tokenClickCount[i] == 1 || tokens[i] == 0 || !canClickMoreTokens) { errorScreen(); break;}
                     else {
                         tokens[i]--;
                         players[turn].addToken(i);
                         tokenClickCount[i]++;
                         canClickMoreTokens = false;
                         nextTurn();
+                        break;
                     }
                 }
+              
                 tokenClickCounter++;
+              
+             
             }
         }
 
