@@ -145,7 +145,7 @@ public class Card {
     }
     public void scale(double x, double y)
     {
-    	button.setSize((int)(button.getWidth() * x), (int)(button.getHeight() * y));
+    	button.setSize((int)(WIDTH * x), (int)(HEIGHT * y));
     }
     public void paint(Graphics g) {
     	int x = button.getX();
