@@ -802,17 +802,20 @@ System.out.println("error panel pops up");
     		currentPlayerViewing = RESERVED;
     	}
     	
-    	if(otherCardTab.isInside(x,y))
+    	if(showOtherTab)
     	{
-    		otherPlayerViewing = CARDS;
-    	}
-    	if(otherPatronTab.isInside(x,y))
-    	{
-    		otherPlayerViewing = PATRONS;
-    	}
-    	if(otherReservedTab.isInside(x,y))
-    	{
-    		otherPlayerViewing = RESERVED;
+    		if(otherCardTab.isInside(x,y))
+        	{
+        		otherPlayerViewing = CARDS;
+        	}
+        	if(otherPatronTab.isInside(x,y))
+        	{
+        		otherPlayerViewing = PATRONS;
+        	}
+        	if(otherReservedTab.isInside(x,y))
+        	{
+        		otherPlayerViewing = RESERVED;
+        	}
     	}
 
         for (int i = 0; i < tokenButtons.length - 1; i++){ // Clicking Normal tokens
