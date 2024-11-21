@@ -862,8 +862,6 @@ System.out.println("error panel pops up");
                 }
               
                 tokenClickCounter++;
-              
-             
             }
         }
 
@@ -872,36 +870,31 @@ System.out.println("error panel pops up");
             players[turn].addToken(5);
         }
 
-       
         for(int c = 0; c < cards1.length; c++) { //if u click lvl 1 card
-
             if(canBuyCard) { 
-            if(cards1[c].getButton().isInside(x,y)) {
-                int[] tokArr = players[turn].getTokens();
-                if (tokArr[5] > 0) reserveCard(cards1[c], c);
-                else buyCard(cards1[c], c);
+                if(cards1[c].getButton().isInside(x,y)) {
+                    int[] tokArr = players[turn].getTokens();
+                    if (tokArr[5] > 0) reserveCard(cards1[c], c);
+                    else buyCard(cards1[c], c);
+                }
+            } else { //if canbuycard is false u go error
+                errorScreen();
             }
         }
-        else { //if canbuycard is false u go error
-            errorScreen();
-        }
-           
-        }
-        for(int c = 0; c < cards2.length; c++) { //if u click lvl 2 card
-
-            if(canBuyCard) { 
-                if(cards2[c].getButton().isInside(x,y)) {
-                int[] tokArr = players[turn].getTokens();
-                if (tokArr[5] > 0) reserveCard(cards2[c], c);
-                else buyCard(cards2[c], c);
+        for (int c = 0; c < cards2.length; c++) { //if u click lvl 2 card 
+            if (canBuyCard) { 
+                if (cards2[c].getButton().isInside(x,y)) {
+                    int[] tokArr = players[turn].getTokens();
+                    if (tokArr[5] > 0) reserveCard(cards2[c], c);
+                    else buyCard(cards2[c], c);
                 }
             }
             else { //if canbuycard is false u go error
                 errorScreen();
             }
         }
-        for(int c = 0; c < cards3.length; c++) { //if u click lvl 2 card
 
+        for (int c = 0; c < cards3.length; c++) { //if u click lvl 2 card
             if(canBuyCard) { 
                 if(cards3[c].getButton().isInside(x,y)) {
                 int[] tokArr = players[turn].getTokens();
@@ -913,7 +906,7 @@ System.out.println("error panel pops up");
                 errorScreen();
             }
         
-    }
+        }
 
 
         repaint();
