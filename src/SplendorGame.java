@@ -40,15 +40,22 @@ public class SplendorGame extends JPanel implements MouseListener{
     public int[] tokens;
     public int size;
     public int cardHeight, cardLength;
-    private int currentPlayerViewing = RESERVED;
-    private int otherPlayerViewing = CARDS;
+    private int currentPlayerViewing = CARDS;
+    private int otherPlayerViewing = RESERVED;
     private int otherPlayer = 1;
-    private boolean showOtherTab = true;
+    private boolean showOtherTab = false;
     public int[] tokenClickCount;
     public int tokenClickCounter;
     private Button otherTabButton;
     private Button otherLeftButton;
     private Button otherRightButton;
+    private Button cardTab;
+    private Button reservedTab;
+    private Button patronTab;
+    private Button otherCardTab;
+    private Button otherReservedTab;
+    private Button otherPatronTab;
+    private Button endTurnButton;
     private boolean canClickMoreTokens;
     public boolean canBuyCard;
     private boolean tokenerror; //token erorr 
@@ -61,6 +68,7 @@ public class SplendorGame extends JPanel implements MouseListener{
     private static BufferedImage upButton;
     private static BufferedImage downButton;
     public static BufferedImage playerImage;
+    private static BufferedImage endTurnImage;
     static
     {
     	cardBacks = new BufferedImage[3];
@@ -92,6 +100,8 @@ public class SplendorGame extends JPanel implements MouseListener{
 	        rightButton = ImageIO.read(Patron.class.getResource("/Images/RightButton.png"));
 	        upButton = ImageIO.read(Patron.class.getResource("/Images/UpButton.png"));
 	        downButton = ImageIO.read(Patron.class.getResource("/Images/DownButton.png"));
+	        
+	        endTurnImage = ImageIO.read(Patron.class.getResource("/Images/EndTurnButton.png"));
 	        
 	        playerImage = ImageIO.read(Patron.class.getResource("/Images/Player.png"));
     	} catch(Exception e)
@@ -128,6 +138,16 @@ public class SplendorGame extends JPanel implements MouseListener{
         
         otherLeftButton = new Button(0, 0, 40, 40, leftButton);
         otherRightButton = new Button(0, 0, 40, 40, rightButton);
+        
+        endTurnButton = new Button(100,100,100,100,endTurnImage);
+        
+        cardTab = new Button(1085, 75, 30, 75, null);
+        patronTab = new Button(1085, 150, 30, 90, null);
+        reservedTab = new Button(1085, 240, 30, 100, null);
+        
+        otherCardTab = new Button(235, 520, 85, 35, null);
+        otherPatronTab = new Button(135, 520, 100, 35, null);
+        otherReservedTab = new Button(15, 520, 120, 35, null);
         
         tokenClickCount = new int[6];
         tokenClickCounter = 0;
@@ -624,10 +644,37 @@ public class SplendorGame extends JPanel implements MouseListener{
             	}
         		break;
         	case PATRONS:
-        		
+        		int currentPatronsX = 40;
+            	int currentPatronsY = 570;
+            	int currentPatronsPadding = 110;
+            	double currentPatronsScale = 0.8;
+            	
+            	ArrayList<Patron> currentPatrons = players[otherPlayer].getPatrons();
+            	
+            	for(int i = 0; i < currentPatrons.size(); i++)
+            	{
+            			Patron patron = currentPatrons.get(i);
+            			patron.scale(currentPatronsScale, currentPatronsScale);
+            			patron.setPosition(currentPatronsX + currentPatronsPadding * i, currentPatronsY);
+            			patron.paint(g);
+            	}
+            	
         		break;
         	case RESERVED:
-        		
+        		int currentReservedX = 40;
+            	int currentReservedY = 570;
+            	int currentReservedPadding = 110;
+            	double currentReservedScale = 0.8;
+            	
+            	ArrayList<Card> currentReserved = players[otherPlayer].getReservedCards();
+            	
+            	for(int i = 0; i < currentReserved.size(); i++)
+            	{
+            			Card card = currentReserved.get(i);
+            			card.scale(currentReservedScale, currentReservedScale);
+            			card.setPosition(currentReservedX + currentReservedPadding * i, currentReservedY);
+            			card.paint(g);
+            	}
         		break;
         	}
         }
@@ -693,7 +740,7 @@ System.out.println("error panel pops up");
     }
 
     public void reserveCard(Card c, int index){
-        players[turn].addReservedCards(c);
+        //players[turn].addReservedCards(c);
     }
 
     public void mousePressed(MouseEvent e) {
@@ -701,6 +748,72 @@ System.out.println("error panel pops up");
 
         int x = e.getX();
     	int y = e.getY();
+    	
+    	if(otherTabButton.isInside(x, y))
+    	{
+    		showOtherTab = !showOtherTab;
+    	}
+    	
+    	if(!showOtherTab)
+    	{
+    		if(otherLeftButton.isInside(x, y))
+    		{
+    			otherPlayer--;
+    			if(otherPlayer == turn)
+    			{
+    				otherPlayer--;
+    			}
+    			if(otherPlayer < 0)
+    			{
+    				otherPlayer = size - 1;
+    			}
+    			if(otherPlayer == turn)
+    			{
+    				otherPlayer--;
+    			}
+    		} else if(otherRightButton.isInside(x, y))
+    		{
+    			otherPlayer++;
+    			if(otherPlayer == turn)
+    			{
+    				otherPlayer++;
+    			}
+    			if(otherPlayer >= size)
+    			{
+    				otherPlayer = 0;
+    			}
+    			if(otherPlayer == turn)
+    			{
+    				otherPlayer++;
+    			}
+    		}
+    	}
+    	
+    	if(cardTab.isInside(x,y))
+    	{
+    		currentPlayerViewing = CARDS;
+    	}
+    	if(patronTab.isInside(x,y))
+    	{
+    		currentPlayerViewing = PATRONS;
+    	}
+    	if(reservedTab.isInside(x,y))
+    	{
+    		currentPlayerViewing = RESERVED;
+    	}
+    	
+    	if(otherCardTab.isInside(x,y))
+    	{
+    		otherPlayerViewing = CARDS;
+    	}
+    	if(otherPatronTab.isInside(x,y))
+    	{
+    		otherPlayerViewing = PATRONS;
+    	}
+    	if(otherReservedTab.isInside(x,y))
+    	{
+    		otherPlayerViewing = RESERVED;
+    	}
 
         for (int i = 0; i < tokenButtons.length - 1; i++){ // Clicking Normal tokens
             if (tokenButtons[i].isInside(x, y)) {
