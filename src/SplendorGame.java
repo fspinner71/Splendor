@@ -740,7 +740,7 @@ System.out.println("error panel pops up");
     }
 
     public void reserveCard(Card c, int index){
-        //players[turn].addReservedCards(c);
+        players[turn].addReservedCards(c);
     }
 
     public void mousePressed(MouseEvent e) {
