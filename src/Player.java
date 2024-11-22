@@ -95,6 +95,24 @@ public class Player {
         patrons.add(p); //if you can buy add the patron to the player 
         return true; //return true to the game
 }
+public boolean canbuypatron(Patron[] x) { //check if player can buy a patron so it will prompt them to buy one 
+   boolean canbuy;
+    for(Patron a : x) {
+        canbuy = true;
+        int[] price = a.getPrice();
+        for(int c = 0; c < price.length; c++) { //check if you can buy
+            if(price[c] > getGems()[c]) {
+                canbuy = false;
+            }
+
+        }
+        if(canbuy == true) {
+            return true;
+        }
+    }
+    return false;
+
+}
 
 public void addToken(int colour){
     tokens[colour]++;

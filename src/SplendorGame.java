@@ -57,6 +57,7 @@ public class SplendorGame extends JPanel implements MouseListener{
     private Button otherPatronTab;
     private Button endTurnButton;
     private boolean canClickMoreTokens;
+    private boolean canBuyPatron;
     public boolean canBuyCard;
     private boolean tokenerror; //token erorr 
     private static BufferedImage[] tokenImages;
@@ -126,9 +127,7 @@ public class SplendorGame extends JPanel implements MouseListener{
         	players[i] = new Player();
         }
         
-        System.out.println(Arrays.toString(cards1)); //TEST PRINTLINE
-        System.out.println(Arrays.toString(cards2)); //TEST PRINTLINE
-        System.out.println(Arrays.toString(cards3)); //TEST PRINTLINE
+        
 
         draw1Button = new Button(0, 0, Card.WIDTH, Card.HEIGHT, cardBacks[0]);
         draw2Button = new Button(0, 0, Card.WIDTH, Card.HEIGHT, cardBacks[1]);
@@ -164,6 +163,7 @@ public class SplendorGame extends JPanel implements MouseListener{
         canBuyCard = true;
         canClickMoreTokens = true;
         tokenerror = false;
+        canBuyPatron = false;
         repaint();
         addMouseListener(this);
     }
@@ -187,6 +187,7 @@ public class SplendorGame extends JPanel implements MouseListener{
 
     }
     public void makePatrons() {
+
         ArrayList<Patron> patronDeck = new ArrayList<Patron>(); //temporary patron deck that will contain all patrons from the csv file
         patrons = new Patron[size+1];  //curent usable patrons
         
@@ -680,21 +681,32 @@ public class SplendorGame extends JPanel implements MouseListener{
         }
     }
 
-    public void nextTurn() { //turn moves 0-3 
-        if(turn == players.length-1) {
-            turn = 0;
-        }
-        else {
-            turn++;
-        }
-        tokenClickCount = new int[6]; //reset token vairalbes so next player can click stuff
-        tokenClickCounter = 0;
-        canClickMoreTokens = true;
-        System.out.println("next turn");
-    }
 
+
+    public void nextTurn() { //turn moves 0-3 
+
+        
+                if(turn == players.length-1) {
+                    turn = 0;
+                }
+                else {
+                    turn++;
+                }
+                tokenClickCount = new int[6]; //reset token vairalbes so next player can click stuff
+                tokenClickCounter = 0;
+                canClickMoreTokens = true;
+                System.out.println("next turn");
+
+            
+    }
+    
     public void errorScreen(){
 System.out.println("error panel pops up");
+    }
+
+    public void errorScreen(int error) {
+
+
     }
     
 
@@ -735,9 +747,7 @@ System.out.println("error panel pops up");
         }
     }
 
-    public void buyPatron(){
-        
-    }
+ 
 
     public void reserveCard(Card c, int index){
         //players[turn].addReservedCards(c);
@@ -909,6 +919,23 @@ System.out.println("error panel pops up");
         }
 
 
+        //PATRON CLICKING
+        if(canBuyPatron) {
+        for(int a = 0; a < patrons.length; a++) {
+            if(patrons[a] != null) {
+            if(patrons[a].getButton().isInside(x, y)) {
+                if(players[turn].buyPatron(patrons[a]) == true) {
+                    canBuyPatron = false;
+                    patrons[a] = null; 
+                    nextTurn();
+                }
+                else {
+                    errorScreen();
+                }
+            }
+        }
+        }
+    }
         repaint();
     }
     public void mouseClicked(MouseEvent e) {}
