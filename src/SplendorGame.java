@@ -770,7 +770,7 @@ public class SplendorGame extends JPanel implements MouseListener{
     
 
     public void reserveCard(Card c, int index){
-        //players[turn].addReservedCards(c);
+        players[turn].addReservedCards(c);
     }
 
     public void mousePressed(MouseEvent e) {
