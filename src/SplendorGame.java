@@ -16,7 +16,11 @@ public class SplendorGame extends JPanel implements MouseListener{
     public static final int RED = 3;
     public static final int BLUE = 4;
     public static final int YELLOW = 5;
-    
+
+    public static final int NOCARDS = 0;
+    public static final int NOTOKENS = 1;
+    public static final int MAXTOKENS = 2;
+
     private static final int CARDS = 0;
     private static final int PATRONS = 1;
     private static final int RESERVED = 2;
@@ -37,6 +41,7 @@ public class SplendorGame extends JPanel implements MouseListener{
     private Button draw2Button;
     private Button draw3Button;
     private Button[] tokenButtons;
+    private boolean errorPanel;
     public int[] tokens;
     public int size;
     public int cardHeight, cardLength;
@@ -69,6 +74,8 @@ public class SplendorGame extends JPanel implements MouseListener{
     private static BufferedImage downButton;
     public static BufferedImage playerImage;
     private static BufferedImage endTurnImage;
+    private static BufferedImage errorScreen, noo, noCards, noTokens, maxTokens, ok;
+    public static Button okButton;
     static
     {
     	cardBacks = new BufferedImage[3];
@@ -102,7 +109,15 @@ public class SplendorGame extends JPanel implements MouseListener{
 	        downButton = ImageIO.read(Patron.class.getResource("/Images/DownButton.png"));
 	        
 	        endTurnImage = ImageIO.read(Patron.class.getResource("/Images/EndTurnButton.png"));
-	        
+
+	        errorScreen = ImageIO.read(Patron.class.getResource("/Images/ErrorWindow.png"));
+            ok = ImageIO.read(Patron.class.getResource("/Images/OkButton.png"));
+            noo = ImageIO.read(Patron.class.getResource("/Images/Noooo.png"));
+            noCards = ImageIO.read(Patron.class.getResource("/Images/NotEnoughCards.png"));
+            noTokens = ImageIO.read(Patron.class.getResource("/Images/NotEnoughTokens.png"));
+            maxTokens = ImageIO.read(Patron.class.getResource("/Images/MaxTokensTaken.png"));
+            okButton = new Button(500, 475, ok.getWidth()/4, ok.getHeight()/4, ok);
+
 	        playerImage = ImageIO.read(Patron.class.getResource("/Images/Player.png"));
     	} catch(Exception e)
     	{
@@ -362,6 +377,7 @@ public class SplendorGame extends JPanel implements MouseListener{
 
     public void paint(Graphics g)
     {
+        if(errorPanel == false) {
         super.paint(g);
         g.drawImage(SplendorMenu.background, 0, 0, getWidth(), getHeight(), null);
         
@@ -679,6 +695,15 @@ public class SplendorGame extends JPanel implements MouseListener{
         	}
         }
     }
+    else { //if error screen popus
+
+
+        g.drawImage(errorScreen, 250, 72, errorScreen.getWidth()/2, errorScreen.getHeight()/2, null); //paint error window
+        okButton.paint(g);
+        System.out.println("errr planel draew");
+    }
+
+    }
 
     public void nextTurn() { //turn moves 0-3 
         if(turn == players.length-1) {
@@ -690,11 +715,14 @@ public class SplendorGame extends JPanel implements MouseListener{
         tokenClickCount = new int[6]; //reset token vairalbes so next player can click stuff
         tokenClickCounter = 0;
         canClickMoreTokens = true;
+        canBuyCard = true;
         System.out.println("next turn");
     }
 
-    public void errorScreen(){
-System.out.println("error panel pops up");
+    public void errorScreen(){ //general error screen
+        System.out.println("error panel pops up");
+        errorPanel = true;
+        repaint();
     }
     
 
@@ -739,16 +767,20 @@ System.out.println("error panel pops up");
         
     }
 
+    
+
     public void reserveCard(Card c, int index){
         //players[turn].addReservedCards(c);
     }
 
     public void mousePressed(MouseEvent e) {
+        
+         //if error doesnt occurs
         if(e.getButton() != MouseEvent.BUTTON1) {return;}
 
         int x = e.getX();
     	int y = e.getY();
-    	
+    	if(errorPanel == false){
     	if(otherTabButton.isInside(x, y))
     	{
     		showOtherTab = !showOtherTab;
@@ -910,6 +942,13 @@ System.out.println("error panel pops up");
 
 
         repaint();
+    }
+    else { //if error occurs
+       if(okButton.isInside(x, y)) {
+       errorPanel = false;
+       repaint();
+    }
+}
     }
     public void mouseClicked(MouseEvent e) {}
     public void mouseEntered(MouseEvent e) {}
