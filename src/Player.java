@@ -98,6 +98,9 @@ public class Player {
 public boolean canbuypatron(Patron[] x) { //check if player can buy a patron so it will prompt them to buy one 
    boolean canbuy;
     for(Patron a : x) {
+        if(a != null) {
+
+        
         canbuy = true;
         int[] price = a.getPrice();
         for(int c = 0; c < price.length; c++) { //check if you can buy
@@ -110,6 +113,7 @@ public boolean canbuypatron(Patron[] x) { //check if player can buy a patron so 
             return true;
         }
     }
+}
     return false;
 
 }
