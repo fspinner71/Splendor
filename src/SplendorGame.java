@@ -74,7 +74,7 @@ public class SplendorGame extends JPanel implements MouseListener{
     private static BufferedImage downButton;
     public static BufferedImage playerImage;
     private static BufferedImage endTurnImage;
-    private static BufferedImage errorScreen, noo, noCards, noTokens, maxTokens, ok;
+    private static BufferedImage errorScreen, noo, noCards, noTokens, maxTokens, ok, errorMessage;
     public static Button okButton;
     static
     {
@@ -117,7 +117,7 @@ public class SplendorGame extends JPanel implements MouseListener{
             noTokens = ImageIO.read(Patron.class.getResource("/Images/NotEnoughTokens.png"));
             maxTokens = ImageIO.read(Patron.class.getResource("/Images/MaxTokensTaken.png"));
             okButton = new Button(500, 475, ok.getWidth()/4, ok.getHeight()/4, ok);
-
+            errorMessage = null;
 	        playerImage = ImageIO.read(Patron.class.getResource("/Images/Player.png"));
     	} catch(Exception e)
     	{
@@ -701,6 +701,11 @@ public class SplendorGame extends JPanel implements MouseListener{
         g.drawImage(errorScreen, 250, 72, errorScreen.getWidth()/2, errorScreen.getHeight()/2, null); //paint error window
         okButton.paint(g);
         System.out.println("errr planel draew");
+        g.drawImage(noo, 490, 105, noo.getWidth()/7, noo.getHeight()/7, null); //paint nooo
+        
+        if(errorMessage != null) {
+            g.drawImage(errorMessage, 360, 200, errorMessage.getWidth()/10, errorMessage.getHeight()/10, null); //paint
+        }
     }
 
     }
@@ -722,6 +727,21 @@ public class SplendorGame extends JPanel implements MouseListener{
     public void errorScreen(){ //general error screen
         System.out.println("error panel pops up");
         errorPanel = true;
+
+        repaint();
+    }
+    public void errorScreen(int error){ //error screen with message
+        System.out.println("error panel pops up");
+        errorPanel = true;
+        if(error == NOCARDS) {
+            errorMessage = noCards;
+        }
+        if(error == NOTOKENS) {
+            errorMessage = noTokens;
+        }
+        if(error == MAXTOKENS) {
+            errorMessage = maxTokens;
+        }
         repaint();
     }
     
@@ -759,7 +779,7 @@ public class SplendorGame extends JPanel implements MouseListener{
             nextTurn();
         }
         if(x==false) {
-            errorScreen();
+            errorScreen(NOTOKENS);
         }
     }
 
@@ -882,7 +902,7 @@ public class SplendorGame extends JPanel implements MouseListener{
                     tokenClickCount[i]++;
                     
                 } else {
-                    if (tokenClickCount[i] == 1 || tokens[i] == 0 || !canClickMoreTokens) { errorScreen(); break;}
+                    if (tokenClickCount[i] == 1 || tokens[i] == 0 || !canClickMoreTokens) { errorScreen(MAXTOKENS); break;}
                     else {
                         tokens[i]--;
                         players[turn].addToken(i);
@@ -946,6 +966,7 @@ public class SplendorGame extends JPanel implements MouseListener{
     else { //if error occurs
        if(okButton.isInside(x, y)) {
        errorPanel = false;
+       errorMessage = null;
        repaint();
     }
 }
