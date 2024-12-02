@@ -22,7 +22,7 @@ public class Player {
         int score = 0;
 
         for (int i = 0; i < this.cards.length; i++)
-            for (int j = 0; j < this.cards[i].size(); i++)
+            for (int j = 0; j < this.cards[i].size(); j++)
                 score += this.cards[i].get(j).getPoints();
 
         for (int i = 0; i < this.patrons.size(); i++)
@@ -34,7 +34,10 @@ public class Player {
     public ArrayList<Card>[] getCards(){
         return cards;
     }
+    public void addCard(Card c) { //addcard for testig
+        cards[c.getGem()].add(c);
 
+    }
     public ArrayList<Patron> getPatrons()
     {
     	return patrons;
@@ -62,7 +65,28 @@ public class Player {
         }
         return gems;
     }
-
+    public int numCards() {
+        int num = 0;
+        for(int c = 0; c < cards.length; c++) {
+            for(int i = 0; i < cards[c].size(); i++) {
+                num++;
+            }
+        }
+        return num;
+        
+    }
+    public int numcardswithpoints() { //in case of double tie 
+        int num = 0;
+        for(int c = 0; c < cards.length; c++) {
+            for(int i = 0; i < cards[c].size(); i++) {
+                if(cards[c].get(i).getPoints() != 0) {
+                num++;
+                }
+            }
+        }
+        return num;
+        
+    }
     public boolean buyCard(Card c){
         boolean canBuy = false;
         int[] price = c.getPrice();

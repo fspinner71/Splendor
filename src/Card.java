@@ -128,6 +128,7 @@ public class Card {
         return button;
     }
 
+    
     public String toString() {
         return "Card is worth " +  points + " points. its, gem color is " + gemColor + " its level is " + level + " its price is " + Arrays.toString(price) ;
     }

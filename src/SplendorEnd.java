@@ -16,6 +16,7 @@ public class SplendorEnd extends JPanel {
         try {
             background = ImageIO.read(SplendorEnd.class.getResource("/Images/background.png"));
             
+            numbers = new BufferedImage[10];
             numbers[0] = ImageIO.read(Card.class.getResource("/Images/0.png"));
             numbers[1] = ImageIO.read(Card.class.getResource("/Images/1.png"));
             numbers[2] = ImageIO.read(Card.class.getResource("/Images/2.png"));
@@ -31,38 +32,46 @@ public class SplendorEnd extends JPanel {
             wins = ImageIO.read(Card.class.getResource("/Images/Wins.png"));
             player = ImageIO.read(Card.class.getResource("/Images/Player.png"));
             period = ImageIO.read(Card.class.getResource("/Images/Period.png"));
+            System.out.println("end panel loaded");
         } catch (Exception e) {
             System.out.println("splenodr end images failed to load");
             e.printStackTrace();
         }
         
     }
-    public SplendorEnd (int winner, Player[] x) //takes in winner and players
+    public SplendorEnd (Player[] x) //takes in winner and players
     {     
     	players = x;
-    	this.winner = winner;
-    	
+    	getWinner(x);
+    	winner = 0;
     }
+    public void getWinner(Player[] a) {
+        int winner = 0;
+        for(int c = 0; c < a.length-1; c++) {
+            if(a[c+1].getScore() > a[c].getScore()) {
+                winner = c+1;
+            }
+            if(a[c+1].getScore() == a[c].getScore()) {
+                if(a[c+1].numCards() < a[c].numCards()) {
+                    winner = c+1;
+                }
+                if(a[c+1].numCards()  == a[c].numCards()) {
+                    if(a[c+1].numcardswithpoints() < a[c].numcardswithpoints()) {
+                        winner = c+1;
+                    }
+                }
+            }
+        }
+        this.winner = winner;
 
+    }
     public void paint(Graphics g) {
         super.paint(g);
         g.drawImage(background, 0, 0, getWidth(), getHeight(), null);
-        g.drawImage(elGato, -600, 200, elGato.getWidth(), elGato.getHeight(), null);
+        g.drawImage(elGato, 600, 200, elGato.getWidth()*5, elGato.getHeight(), null);
+        //do the score
 
-        for(int c = 0; c  < players.length-1; c++) { //orders players in array
-            if(players[c].getScore() > players[c+1].getScore()) {
-                Player temp = players[c];
-                players[c] = players[c+1];
-                players[c+1] = temp;
-                c=0;
-            }
-        }
-
-        for(int c = 0; c < players.length; c++) { //is gonna draw the list of scoreboard like "1. Player 1 -"" depending on player size
-            g.drawImage(numbers[c+1], 400, 500 + 100*c, 50, 100, null);
-            
-            
-        }
+        
 
     }
 

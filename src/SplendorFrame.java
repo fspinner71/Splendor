@@ -35,18 +35,18 @@ public class SplendorFrame extends JFrame {
     }
     public void addGame()
     {
-    	game = new SplendorGame(4);
+    	game = new SplendorGame(4, this);
     	menu.setVisible(false);
     	
     	remove(menu);
     	add(game);
     }
-    public void addEnd()
+    public void addEnd(Player[] a)
     {
-    	//end = new SplendorEnd();
+    	end = new SplendorEnd(a);
     	game.setVisible(false);
     	
     	remove(game);
-    	//add(end);
+    	add(end);
     }
 }
