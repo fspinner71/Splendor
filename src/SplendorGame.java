@@ -16,7 +16,11 @@ public class SplendorGame extends JPanel implements MouseListener{
     public static final int RED = 3;
     public static final int BLUE = 4;
     public static final int YELLOW = 5;
-    
+
+    public static final int NOCARDS = 0;
+    public static final int NOTOKENS = 1;
+    public static final int MAXTOKENS = 2;
+
     private static final int CARDS = 0;
     private static final int PATRONS = 1;
     private static final int RESERVED = 2;
@@ -37,6 +41,7 @@ public class SplendorGame extends JPanel implements MouseListener{
     private Button draw2Button;
     private Button draw3Button;
     private Button[] tokenButtons;
+    private boolean errorPanel;
     public int[] tokens;
     public int size;
     public int cardHeight, cardLength;
@@ -57,7 +62,6 @@ public class SplendorGame extends JPanel implements MouseListener{
     private Button otherPatronTab;
     private Button endTurnButton;
     private boolean canClickMoreTokens;
-    private boolean canBuyPatron;
     public boolean canBuyCard;
     private boolean tokenerror; //token erorr 
     private static BufferedImage[] tokenImages;
@@ -70,6 +74,8 @@ public class SplendorGame extends JPanel implements MouseListener{
     private static BufferedImage downButton;
     public static BufferedImage playerImage;
     private static BufferedImage endTurnImage;
+    private static BufferedImage errorScreen, noo, noCards, noTokens, maxTokens, ok;
+    public static Button okButton;
     static
     {
     	cardBacks = new BufferedImage[3];
@@ -103,7 +109,15 @@ public class SplendorGame extends JPanel implements MouseListener{
 	        downButton = ImageIO.read(Patron.class.getResource("/Images/DownButton.png"));
 	        
 	        endTurnImage = ImageIO.read(Patron.class.getResource("/Images/EndTurnButton.png"));
-	        
+
+	        errorScreen = ImageIO.read(Patron.class.getResource("/Images/ErrorWindow.png"));
+            ok = ImageIO.read(Patron.class.getResource("/Images/OkButton.png"));
+            noo = ImageIO.read(Patron.class.getResource("/Images/Noooo.png"));
+            noCards = ImageIO.read(Patron.class.getResource("/Images/NotEnoughCards.png"));
+            noTokens = ImageIO.read(Patron.class.getResource("/Images/NotEnoughTokens.png"));
+            maxTokens = ImageIO.read(Patron.class.getResource("/Images/MaxTokensTaken.png"));
+            okButton = new Button(500, 475, ok.getWidth()/4, ok.getHeight()/4, ok);
+
 	        playerImage = ImageIO.read(Patron.class.getResource("/Images/Player.png"));
     	} catch(Exception e)
     	{
@@ -127,7 +141,9 @@ public class SplendorGame extends JPanel implements MouseListener{
         	players[i] = new Player();
         }
         
-        
+        System.out.println(Arrays.toString(cards1)); //TEST PRINTLINE
+        System.out.println(Arrays.toString(cards2)); //TEST PRINTLINE
+        System.out.println(Arrays.toString(cards3)); //TEST PRINTLINE
 
         draw1Button = new Button(0, 0, Card.WIDTH, Card.HEIGHT, cardBacks[0]);
         draw2Button = new Button(0, 0, Card.WIDTH, Card.HEIGHT, cardBacks[1]);
@@ -163,7 +179,6 @@ public class SplendorGame extends JPanel implements MouseListener{
         canBuyCard = true;
         canClickMoreTokens = true;
         tokenerror = false;
-        canBuyPatron = false;
         repaint();
         addMouseListener(this);
     }
@@ -187,7 +202,6 @@ public class SplendorGame extends JPanel implements MouseListener{
 
     }
     public void makePatrons() {
-
         ArrayList<Patron> patronDeck = new ArrayList<Patron>(); //temporary patron deck that will contain all patrons from the csv file
         patrons = new Patron[size+1];  //curent usable patrons
         
@@ -363,6 +377,7 @@ public class SplendorGame extends JPanel implements MouseListener{
 
     public void paint(Graphics g)
     {
+        if(errorPanel == false) {
         super.paint(g);
         g.drawImage(SplendorMenu.background, 0, 0, getWidth(), getHeight(), null);
         
@@ -680,33 +695,34 @@ public class SplendorGame extends JPanel implements MouseListener{
         	}
         }
     }
+    else { //if error screen popus
 
 
+        g.drawImage(errorScreen, 250, 72, errorScreen.getWidth()/2, errorScreen.getHeight()/2, null); //paint error window
+        okButton.paint(g);
+        System.out.println("errr planel draew");
+    }
+
+    }
 
     public void nextTurn() { //turn moves 0-3 
-
-        
-                if(turn == players.length-1) {
-                    turn = 0;
-                }
-                else {
-                    turn++;
-                }
-                tokenClickCount = new int[6]; //reset token vairalbes so next player can click stuff
-                tokenClickCounter = 0;
-                canClickMoreTokens = true;
-                System.out.println("next turn");
-
-            
-    }
-    
-    public void errorScreen(){
-System.out.println("error panel pops up");
+        if(turn == players.length-1) {
+            turn = 0;
+        }
+        else {
+            turn++;
+        }
+        tokenClickCount = new int[6]; //reset token vairalbes so next player can click stuff
+        tokenClickCounter = 0;
+        canClickMoreTokens = true;
+        canBuyCard = true;
+        System.out.println("next turn");
     }
 
-    public void errorScreen(int error) {
-
-
+    public void errorScreen(){ //general error screen
+        System.out.println("error panel pops up");
+        errorPanel = true;
+        repaint();
     }
     
 
@@ -747,18 +763,24 @@ System.out.println("error panel pops up");
         }
     }
 
- 
+    public void buyPatron(){
+        
+    }
+
+    
 
     public void reserveCard(Card c, int index){
-        //players[turn].addReservedCards(c);
+        players[turn].addReservedCards(c);
     }
 
     public void mousePressed(MouseEvent e) {
+        
+         //if error doesnt occurs
         if(e.getButton() != MouseEvent.BUTTON1) {return;}
 
         int x = e.getX();
     	int y = e.getY();
-    	
+    	if(errorPanel == false){
     	if(otherTabButton.isInside(x, y))
     	{
     		showOtherTab = !showOtherTab;
@@ -919,24 +941,14 @@ System.out.println("error panel pops up");
         }
 
 
-        //PATRON CLICKING
-        if(canBuyPatron) {
-        for(int a = 0; a < patrons.length; a++) {
-            if(patrons[a] != null) {
-            if(patrons[a].getButton().isInside(x, y)) {
-                if(players[turn].buyPatron(patrons[a]) == true) {
-                    canBuyPatron = false;
-                    patrons[a] = null; 
-                    nextTurn();
-                }
-                else {
-                    errorScreen();
-                }
-            }
-        }
-        }
-    }
         repaint();
+    }
+    else { //if error occurs
+       if(okButton.isInside(x, y)) {
+       errorPanel = false;
+       repaint();
+    }
+}
     }
     public void mouseClicked(MouseEvent e) {}
     public void mouseEntered(MouseEvent e) {}
