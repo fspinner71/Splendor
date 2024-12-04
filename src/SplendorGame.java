@@ -189,7 +189,7 @@ public class SplendorGame extends JPanel implements MouseListener{
         test();
         repaint();
         addMouseListener(this);
-   
+       
     }
 
     public void test() { //test methjod
@@ -219,7 +219,7 @@ public class SplendorGame extends JPanel implements MouseListener{
         players[0].addCard(new Card(1, 4, 1, testprice));
         players[0].addCard(new Card(0, 4, 1, testprice));
 
-        
+       
     }
 
     public void makeTokens() {
@@ -876,10 +876,24 @@ public class SplendorGame extends JPanel implements MouseListener{
 
     public void reserveCard(Card c, int index){
         players[turn].addReservedCards(c);
+
+    }
+
+    public boolean canClickThree() {
+        int emptycount = 0;
+        for(int c = 0; c < tokens.length - 1; c++) {
+            if(tokens[c] == 0) {
+                emptycount++;
+            }
+        }
+        if(emptycount >= 3) {
+            return false;
+        }
+        return true;
     }
 
     public void mousePressed(MouseEvent e) {
-        
+        frame.addEnd(players);
          //if error doesnt occurs
         if(e.getButton() != MouseEvent.BUTTON1) {return;}
 
@@ -961,6 +975,36 @@ public class SplendorGame extends JPanel implements MouseListener{
     	}
 
         for (int i = 0; i < tokenButtons.length - 1; i++){ // Clicking Normal tokens
+
+            if(canClickThree() == false) { //if they cant click 3 
+                if (tokenButtons[i].isInside(x, y)) { 
+                    if (tokens[i] == 0 || players[turn].getTotalTokenCount() >= 9) { errorScreen(); tokenerror = true;}
+
+                    if(tokenClickCounter  == 0 && tokens[i] >= 4) {
+                        tokens[i]--;
+                        players[turn].addToken(i);
+                        tokenClickCount[i]++;
+                        tokenClickCounter++;
+                      
+                        break;
+                    }
+
+                    else if (tokenClickCount[i] == 1) {
+
+                        tokens[i]--;
+                        players[turn].addToken(i);
+                        tokenClickCount[i]++;
+                        buyPatron();
+                        canClickMoreTokens = false;
+                        break;
+                    }
+                    else {
+                        errorScreen();
+                    }
+
+                }
+            }
+            else {
             if (tokenButtons[i].isInside(x, y)) {
                 if (tokenClickCounter == 0){
                     if (tokens[i] == 0 || players[turn].getTotalTokenCount() >= 9) { errorScreen(); tokenerror = true;}
@@ -1006,14 +1050,17 @@ public class SplendorGame extends JPanel implements MouseListener{
                 tokenClickCounter++;
             }
         }
+        }
 
         if (tokenButtons[5].isInside(x, y)){ // Golden tokens, WIP
             tokens[5]--;
             players[turn].addToken(5);
+
+            
         }
 
         for(int c = 0; c < cards1.length; c++) { //if u click lvl 1 card
-            
+            if(cards1[c] != null) {
                 if(cards1[c].getButton().isInside(x,y)) {
                     if(canBuyCard) { 
                     int[] tokArr = players[turn].getTokens();
@@ -1025,8 +1072,9 @@ public class SplendorGame extends JPanel implements MouseListener{
                 } 
             } 
         }
+        }
         for (int c = 0; c < cards2.length; c++) { //if u click lvl 2 card 
-            
+            if(cards2[c] != null) {
                 if (cards2[c].getButton().isInside(x,y)) {
                     if(canBuyCard) { 
                     int[] tokArr = players[turn].getTokens();
@@ -1037,11 +1085,11 @@ public class SplendorGame extends JPanel implements MouseListener{
                     errorScreen(NOTOKENS);
                 } 
             }
-            
+        }
         }
 
         for (int c = 0; c < cards3.length; c++) { //if u click lvl 2 card
-            
+            if(cards3[c] != null) {
                 if(cards3[c].getButton().isInside(x,y)) {
                     if(canBuyCard) { 
                 int[] tokArr = players[turn].getTokens();
@@ -1052,7 +1100,7 @@ public class SplendorGame extends JPanel implements MouseListener{
                     errorScreen(NOTOKENS);
                 } 
             }
-           
+        }
         
         }
 

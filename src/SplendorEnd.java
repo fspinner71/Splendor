@@ -43,7 +43,7 @@ public class SplendorEnd extends JPanel {
     {     
     	players = x;
     	getWinner(x);
-    	winner = 0;
+        
     }
     public void getWinner(Player[] a) {
         int winner = 0;
@@ -63,12 +63,18 @@ public class SplendorEnd extends JPanel {
             }
         }
         this.winner = winner;
-
+        repaint();
     }
     public void paint(Graphics g) {
         super.paint(g);
         g.drawImage(background, 0, 0, getWidth(), getHeight(), null);
-        g.drawImage(elGato, 600, 200, elGato.getWidth()*5, elGato.getHeight(), null);
+        g.drawImage(player, 300, 80, player.getWidth()/7, player.getHeight()/7, null);
+        
+            g.drawImage(numbers[winner], 600, 80, numbers[winner].getWidth()/7,  numbers[winner].getHeight()/7, null);
+
+            g.drawImage(wins, 700, 80, wins.getWidth()/7,  wins.getHeight()/7, null);
+
+            g.drawImage(elGato, 400, 200, elGato.getWidth(), elGato.getHeight(), null);
         //do the score
 
         
