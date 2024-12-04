@@ -796,14 +796,10 @@ public class SplendorGame extends JPanel implements MouseListener{
         tokenClickCounter = 0;
         canClickMoreTokens = true;
         canBuyCard = true;
-<<<<<<< Updated upstream
         canBuyPatron = false;
         endTurn = false;
         
 
-=======
-        alreadyClickedYellow = false;
->>>>>>> Stashed changes
         System.out.println("next turn");
     }
 
