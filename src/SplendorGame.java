@@ -1075,14 +1075,8 @@ public class SplendorGame extends JPanel implements MouseListener{
                     errorScreen(NOTOKENS);
                 } 
             }
-<<<<<<< Updated upstream
             
         }
-=======
-            else { //if canbuycard is false u go error
-                errorScreen();
-            }
->>>>>>> Stashed changes
 
         }
         for (int c = 0; c < cards3.length; c++) { //if u click lvl 2 card
