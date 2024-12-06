@@ -186,12 +186,9 @@ public class SplendorGame extends JPanel implements MouseListener{
         canBuyCard = true;
         canClickMoreTokens = true;
         tokenerror = false;
-<<<<<<< Updated upstream
         endTurn = false;
         test();
-=======
         alreadyClickedYellow = false;
->>>>>>> Stashed changes
         repaint();
         addMouseListener(this);
    
@@ -207,24 +204,34 @@ public class SplendorGame extends JPanel implements MouseListener{
         players[0].addCard(new Card(1, 0, 1, testprice));
         players[0].addCard(new Card(1, 0, 1, testprice));
         players[0].addCard(new Card(1, 0, 1, testprice));
-
+        players[0].addCard(new Card(1, 0, 1, testprice));
+        players[0].addCard(new Card(1, 0, 1, testprice));
+        players[0].addCard(new Card(1, 0, 1, testprice));
         players[0].addCard(new Card(1, 1, 1, testprice));
         players[0].addCard(new Card(1, 1, 1, testprice));
         players[0].addCard(new Card(1, 1, 1, testprice));
-
+        players[0].addCard(new Card(1, 1, 1, testprice));
+        players[0].addCard(new Card(1, 1, 1, testprice));
+        players[0].addCard(new Card(1, 1, 1, testprice));
         players[0].addCard(new Card(1, 2, 1, testprice));
         players[0].addCard(new Card(1, 2, 1, testprice));
         players[0].addCard(new Card(1, 2, 1, testprice));
-
+        players[0].addCard(new Card(1, 2, 1, testprice));
+        players[0].addCard(new Card(1, 2, 1, testprice));
+        players[0].addCard(new Card(1, 2, 1, testprice));
         players[0].addCard(new Card(1, 3, 1, testprice));
         players[0].addCard(new Card(1, 3, 1, testprice));
         players[0].addCard(new Card(1, 3, 1, testprice));
-
+        players[0].addCard(new Card(1, 3, 1, testprice));
+        players[0].addCard(new Card(1, 3, 1, testprice));
+        players[0].addCard(new Card(1, 3, 1, testprice));
         players[0].addCard(new Card(1, 4, 1, testprice));
         players[0].addCard(new Card(1, 4, 1, testprice));
         players[0].addCard(new Card(0, 4, 1, testprice));
-
-        
+        players[0].addCard(new Card(1, 4, 1, testprice));
+        players[0].addCard(new Card(1, 4, 1, testprice));
+        players[0].addCard(new Card(0, 4, 1, testprice));
+   
     }
 
     public void makeTokens() {
@@ -331,7 +338,7 @@ public class SplendorGame extends JPanel implements MouseListener{
         draw1.remove(2);
         draw1.remove(3);
         draw1.remove(4);
-        
+        draw1.remove(5);
     }
     
     public void makeLevel2() {
@@ -561,7 +568,7 @@ public class SplendorGame extends JPanel implements MouseListener{
         int currentPlayerSpace = 10;
         
         g.drawImage(playerImage, currentPlayerX, currentPlayerY, currentPlayerWidth, currentPlayerHeight, null);
-        g.drawImage(Card.numbers[turn], currentPlayerX + currentPlayerWidth + currentPlayerSpace, currentPlayerY, currentPlayerHeight, currentPlayerHeight, null);
+        g.drawImage(Card.numbers[turn+1], currentPlayerX + currentPlayerWidth + currentPlayerSpace, currentPlayerY, currentPlayerHeight, currentPlayerHeight, null);
         
         int otherTokensX = 70;
         int otherTokenxY = 550;
@@ -844,16 +851,43 @@ public class SplendorGame extends JPanel implements MouseListener{
          
             int level = c.getLevel(); //remove card and replace it 
             if(level ==1) {
-                cards1[index] = draw1.get(0);
+                if(draw1.isEmpty() == false) {
+                    System.out.println(index);
+                    System.out.println(Arrays.toString(cards1[index].getPrice()));
+                    cards1[index] = draw1.get(0);
+
                 draw1.remove(0);
+
+                System.out.println(index);
+                System.out.println(Arrays.toString(cards1[index].getPrice()));
+                }
+
+                else {
+                    cards1[index] = null;
+                }
+                
             }
             if(level ==2) {
-                cards2[index] = draw2.get(0);
-                draw2.remove(0);
+                if(draw2.isEmpty() == false) {
+                    cards2[index] = draw2.get(0);
+    
+                    draw2.remove(0);
+                    }
+                    else {
+                        cards2[index] = null;
+                    }
+               
             }
             if(level ==3) {
-                cards3[index] = draw3.get(0);
-                draw3.remove(0);
+                if(draw3.isEmpty() == false) {
+                    cards3[index] = draw3.get(0);
+    
+                    draw3.remove(0);
+                    }
+                    else {
+                        cards3[index] = null;
+                    }
+                
             }
             buyPatron();
         }
@@ -1077,9 +1111,10 @@ public class SplendorGame extends JPanel implements MouseListener{
             }
             
         }
+            
 
-        }
-        for (int c = 0; c < cards3.length; c++) { //if u click lvl 2 card
+        
+        for (int c = 0; c < cards3.length; c++) { //if u click lvl 3 card
             
                 if(cards3[c].getButton().isInside(x,y)) {
                     if(canBuyCard) { 

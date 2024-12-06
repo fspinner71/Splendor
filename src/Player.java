@@ -6,7 +6,7 @@ public class Player {
     private ArrayList<Card>[] cards;
     private ArrayList<Card> reservedCards;
     private ArrayList<Patron> patrons;
-
+    private int thenumber;
     public Player(){
         this.tokens = new int[6];
    
@@ -149,4 +149,13 @@ public void addToken(int colour){
 public void addReservedCards(Card c){
     this.reservedCards.add(c);
 }
+
+public void addnumber(int num) {
+
+    thenumber = num;
+}
+public int getnumber() {
+    return thenumber;
+}
+
 }
