@@ -204,17 +204,40 @@ public class SplendorGame extends JPanel implements MouseListener{
         testprice[3] = 1;
         testprice[4] = 1;
       
-        players[0].addCard(new Card(0, 4, 1, testprice));
-        players[0].addToken(0);
-        players[0].addToken(0);
-        players[0].addToken(0);
-        players[0].addToken(0);
-        players[0].addToken(1);
-        players[0].addToken(1);
-        players[0].addToken(1);
-        players[0].addToken(1);
-        players[0].addToken(1);
-        players[0].addToken(2);
+        players[0].addCard(new Card(1, 0, 1, testprice));
+        players[0].addCard(new Card(1, 0, 1, testprice));
+        players[0].addCard(new Card(1, 0, 1, testprice));
+        players[0].addCard(new Card(1, 0, 1, testprice));
+        players[0].addCard(new Card(1, 0, 1, testprice));
+        players[0].addCard(new Card(0, 1, 1, testprice));
+        players[0].addCard(new Card(0, 1, 1, testprice));
+        players[0].addCard(new Card(0, 1, 1, testprice));
+        players[0].addCard(new Card(0, 1, 1, testprice));
+        players[0].addCard(new Card(0, 1, 1, testprice));
+
+        players[0].addCard(new Card(2, 2, 1, testprice));
+        players[0].addCard(new Card(2, 2, 1, testprice));
+        players[0].addCard(new Card(2, 2, 1, testprice));
+        players[0].addCard(new Card(2, 2, 1, testprice));
+        players[0].addCard(new Card(2, 2, 1, testprice));
+        players[0].addCard(new Card(2, 2, 1, testprice));
+
+        players[0].addCard(new Card(3, 3, 1, testprice));
+        players[0].addCard(new Card(3, 3, 1, testprice));
+        players[0].addCard(new Card(3, 3, 1, testprice));
+        players[0].addCard(new Card(3, 3, 1, testprice));
+        players[0].addCard(new Card(3, 3, 1, testprice));
+        players[0].addCard(new Card(3, 3, 1, testprice));
+        players[0].addCard(new Card(3, 3, 1, testprice));
+
+        players[0].addCard(new Card(4, 4, 1, testprice));
+        players[0].addCard(new Card(4, 4, 1, testprice));
+        players[0].addCard(new Card(4, 4, 1, testprice));
+        players[0].addCard(new Card(4, 4, 1, testprice));
+        players[0].addCard(new Card(4, 4, 1, testprice));
+        players[0].addCard(new Card(4, 4, 1, testprice));
+        players[0].addCard(new Card(4, 4, 1, testprice));
+
     }
 
     public void makeTokens() {
