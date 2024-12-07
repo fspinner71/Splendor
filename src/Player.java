@@ -157,5 +157,7 @@ public void addnumber(int num) {
 public int getnumber() {
     return thenumber;
 }
-
+public void removeToken(int a) {
+    tokens[a]--;
+}
 }

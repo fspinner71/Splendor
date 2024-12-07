@@ -64,7 +64,7 @@ public class SplendorGame extends JPanel implements MouseListener{
     public boolean endTurn;
     private boolean canClickMoreTokens;
     public boolean canBuyCard;
-    public boolean canBuyPatron;
+    public boolean canBuyPatron, replaceTokens;
     public int endingTurns;
     private boolean tokenerror; //token erorr 
     private boolean alreadyClickedYellow;
@@ -78,7 +78,7 @@ public class SplendorGame extends JPanel implements MouseListener{
     private static BufferedImage downButton;
     public static BufferedImage playerImage;
     private static BufferedImage endTurnImage;
-    private static BufferedImage errorScreen, noo, noCards, noTokens, maxTokens, ok, errorMessage;
+    private static BufferedImage errorScreen, noo, noCards, noTokens, maxTokens, ok, errorMessage, generalError;
     public static Button okButton;
     private SplendorFrame frame;
     static
@@ -121,6 +121,7 @@ public class SplendorGame extends JPanel implements MouseListener{
             noCards = ImageIO.read(Patron.class.getResource("/Images/NotEnoughCards.png"));
             noTokens = ImageIO.read(Patron.class.getResource("/Images/NotEnoughTokens.png"));
             maxTokens = ImageIO.read(Patron.class.getResource("/Images/MaxTokensTaken.png"));
+            generalError = ImageIO.read(Patron.class.getResource("/Images/YouCantDoThat.png"));
             okButton = new Button(500, 475, ok.getWidth()/4, ok.getHeight()/4, ok);
             errorMessage = null;
 	        playerImage = ImageIO.read(Patron.class.getResource("/Images/Player.png"));
@@ -187,6 +188,7 @@ public class SplendorGame extends JPanel implements MouseListener{
         canClickMoreTokens = true;
         tokenerror = false;
         endTurn = false;
+        replaceTokens = false;
         test();
         alreadyClickedYellow = false;
         repaint();
@@ -201,37 +203,18 @@ public class SplendorGame extends JPanel implements MouseListener{
         testprice[2] = 1;
         testprice[3] = 1;
         testprice[4] = 1;
-        players[0].addCard(new Card(1, 0, 1, testprice));
-        players[0].addCard(new Card(1, 0, 1, testprice));
-        players[0].addCard(new Card(1, 0, 1, testprice));
-        players[0].addCard(new Card(1, 0, 1, testprice));
-        players[0].addCard(new Card(1, 0, 1, testprice));
-        players[0].addCard(new Card(1, 0, 1, testprice));
-        players[0].addCard(new Card(1, 1, 1, testprice));
-        players[0].addCard(new Card(1, 1, 1, testprice));
-        players[0].addCard(new Card(1, 1, 1, testprice));
-        players[0].addCard(new Card(1, 1, 1, testprice));
-        players[0].addCard(new Card(1, 1, 1, testprice));
-        players[0].addCard(new Card(1, 1, 1, testprice));
-        players[0].addCard(new Card(1, 2, 1, testprice));
-        players[0].addCard(new Card(1, 2, 1, testprice));
-        players[0].addCard(new Card(1, 2, 1, testprice));
-        players[0].addCard(new Card(1, 2, 1, testprice));
-        players[0].addCard(new Card(1, 2, 1, testprice));
-        players[0].addCard(new Card(1, 2, 1, testprice));
-        players[0].addCard(new Card(1, 3, 1, testprice));
-        players[0].addCard(new Card(1, 3, 1, testprice));
-        players[0].addCard(new Card(1, 3, 1, testprice));
-        players[0].addCard(new Card(1, 3, 1, testprice));
-        players[0].addCard(new Card(1, 3, 1, testprice));
-        players[0].addCard(new Card(1, 3, 1, testprice));
-        players[0].addCard(new Card(1, 4, 1, testprice));
-        players[0].addCard(new Card(1, 4, 1, testprice));
+      
         players[0].addCard(new Card(0, 4, 1, testprice));
-        players[0].addCard(new Card(1, 4, 1, testprice));
-        players[0].addCard(new Card(1, 4, 1, testprice));
-        players[0].addCard(new Card(0, 4, 1, testprice));
-   
+        players[0].addToken(0);
+        players[0].addToken(0);
+        players[0].addToken(0);
+        players[0].addToken(0);
+        players[0].addToken(1);
+        players[0].addToken(1);
+        players[0].addToken(1);
+        players[0].addToken(1);
+        players[0].addToken(1);
+        players[0].addToken(2);
     }
 
     public void makeTokens() {
@@ -806,7 +789,7 @@ public class SplendorGame extends JPanel implements MouseListener{
         canBuyPatron = false;
 	alreadyClickedYellow = true;
         endTurn = false;
-        
+        replaceTokens = false;
 
         System.out.println("next turn");
     }
@@ -814,6 +797,7 @@ public class SplendorGame extends JPanel implements MouseListener{
     public void errorScreen(){ //general error screen
         System.out.println("error panel pops up");
         errorPanel = true;
+        errorMessage = generalError;
         //genenral error message wi p 
         repaint();
     }
@@ -830,6 +814,7 @@ public class SplendorGame extends JPanel implements MouseListener{
             errorMessage = maxTokens;
         }
         repaint();
+        errorMessage = generalError;
     }
     
 
@@ -898,6 +883,15 @@ public class SplendorGame extends JPanel implements MouseListener{
     }
 
     public void buyPatron(){ //wut u ca;l after an action to check if u can buy patron and then go to next turn
+
+        if(players[turn].getTotalTokenCount() > 10) { //check if t hey acceed limit
+            replaceTokens = true;
+            return;
+         
+            
+        }
+
+
         System.out.println("check");
         if(players[turn].canbuypatron(patrons)) {
             canBuyPatron = true;
@@ -934,9 +928,9 @@ public class SplendorGame extends JPanel implements MouseListener{
                 System.out.println("added " + add + " " + i);
                 }
             }
-         
+            players[turn].addCard(c);
             players[turn].getReservedCards().remove(index);
-            nextTurn();
+            buyPatron();
         }
         if(x==false) {
             errorScreen();
@@ -952,6 +946,33 @@ public class SplendorGame extends JPanel implements MouseListener{
     	int y = e.getY();
     	if(errorPanel == false){ //if error screen is not showing curretnly
             
+            //if u have to replace tokens
+
+            if(replaceTokens == true) {
+                if(players[turn].getTotalTokenCount() > 10) {
+                    for(int c = 0; c< tokens.length-1; c++) {
+
+
+                        if(tokenButtons[c].isInside(x, y)) {
+                            if(players[turn].getTokens()[c] != 0) {
+                            players[turn].removeToken(c);
+                            tokens[c]++;
+                          
+                          
+                        }
+                    }
+                    }
+                }
+                 if (players[turn].getTotalTokenCount() == 10){
+                    replaceTokens = false;
+                    buyPatron();
+                    repaint();
+                    return;
+                }
+                repaint();
+                return;
+            }
+
         if(endTurnButton.isInside(x, y) && endTurn) { //if u click end turn button and end tur = ture
             nextTurn();
 
@@ -1027,8 +1048,9 @@ public class SplendorGame extends JPanel implements MouseListener{
 
         for (int i = 0; i < tokenButtons.length - 1; i++){ // Clicking Normal tokens
             if (tokenButtons[i].isInside(x, y)) {
+                canBuyCard = false;
                 if (tokenClickCounter == 0){
-                    if (tokens[i] == 0 || players[turn].getTotalTokenCount() >= 9) { errorScreen(); tokenerror = true;}
+                    if (tokens[i] == 0) { errorScreen(); tokenerror = true;}
                     else {
                         tokens[i]--;
                         players[turn].addToken(i);
@@ -1050,14 +1072,14 @@ public class SplendorGame extends JPanel implements MouseListener{
                         }
                     }
                     
-                    if (players[turn].getTotalTokenCount() >= 9) { errorScreen(); break;}
+                  
 
                     tokens[i]--;
                     players[turn].addToken(i);
                     tokenClickCount[i]++;
                     
                 } else {
-                    if (tokenClickCount[i] == 1 || tokens[i] == 0 || !canClickMoreTokens) { errorScreen(MAXTOKENS); break;}
+                    if (tokenClickCount[i] == 1 || tokens[i] == 0 || !canClickMoreTokens) { errorScreen(); break;}
                     else {
                         tokens[i]--;
                         players[turn].addToken(i);
