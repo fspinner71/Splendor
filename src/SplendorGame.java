@@ -189,7 +189,7 @@ public class SplendorGame extends JPanel implements MouseListener{
         tokenerror = false;
         endTurn = false;
         replaceTokens = false;
-        test();
+       // test();
         alreadyClickedYellow = false;
         repaint();
         addMouseListener(this);
@@ -530,12 +530,14 @@ public class SplendorGame extends JPanel implements MouseListener{
         	patrons[2].setPosition(patronsX + patronsPadding, patronsY);
         	patrons[2].paint(g);
         }
-        if(patrons[3] != null)
+        
+        if(size!=2 && patrons[3] != null)
         {
         	patrons[3].setPosition(patronsX + patronsPadding, patronsY + patronsRectHeight/2 - patronsPadding/2);
         	patrons[3].paint(g);
         }
-        if(patrons[4] != null)
+        
+        if(size ==4 && patrons[4] != null)
         {
         	patrons[4].setPosition(patronsX + patronsPadding, patronsY + patronsRectHeight/2 + patronsPadding/2);
         	patrons[4].paint(g);
@@ -602,7 +604,7 @@ public class SplendorGame extends JPanel implements MouseListener{
         int otherPlayerSpace = 10;
         
         g.drawImage(playerImage, otherPlayerX, otherPlayerY, otherPlayerWidth, otherPlayerHeight, null);
-        g.drawImage(Card.numbers[otherPlayer], otherPlayerX + otherPlayerWidth + otherPlayerSpace, otherPlayerY, otherPlayerHeight, otherPlayerHeight, null);
+        g.drawImage(Card.numbers[otherPlayer+1], otherPlayerX + otherPlayerWidth + otherPlayerSpace, otherPlayerY, otherPlayerHeight, otherPlayerHeight, null);
         
         int scrollButtonsY = 580;
         int leftButtonX = 25;

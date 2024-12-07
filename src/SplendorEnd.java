@@ -9,6 +9,7 @@ public class SplendorEnd extends JPanel {
     private static BufferedImage player;
     private static BufferedImage wins;
     private static BufferedImage period;
+    private  int size;
     private SplendorFrame parentFrame;
     private int winner;
     private Player[] players;
@@ -44,7 +45,7 @@ public class SplendorEnd extends JPanel {
     {     
     	players = x;
     	getWinner(x);
-        
+        size = x.length;
     }
     public void getWinner(Player[] a) {
         int winner = 0;
@@ -69,34 +70,42 @@ public class SplendorEnd extends JPanel {
     public void paint(Graphics g) {
         super.paint(g);
         g.drawImage(background, 0, 0, getWidth(), getHeight(), null);
-        g.drawImage(player, 325, 30, player.getWidth()/7, player.getHeight()/7, null);
+        g.drawImage(player, 340, 30, player.getWidth()/7, player.getHeight()/7, null);
         
-            g.drawImage(numbers[winner], 625, 30, numbers[winner].getWidth()/7,  numbers[winner].getHeight()/7, null);
+            g.drawImage(numbers[winner], 645, 30, numbers[winner].getWidth()/7,  numbers[winner].getHeight()/7, null);
 
-            g.drawImage(wins, 725, 30, wins.getWidth()/7,  wins.getHeight()/7, null);
+            g.drawImage(wins, 745, 30, wins.getWidth()/7,  wins.getHeight()/7, null);
 
-            g.drawImage(elGato, 570, 130, (int)(elGato.getWidth()/1.2), (int)(elGato.getHeight()/1.2), null);
+            g.drawImage(elGato, 575, 130, (int)(elGato.getWidth()/1.2), (int)(elGato.getHeight()/1.2), null);
 
 
-            g.drawImage(numbers[1], 425, 425, numbers[1].getWidth()/10, numbers[1].getHeight()/10, null);
-            g.drawImage(numbers[2], 425, 480, numbers[1].getWidth()/10, numbers[1].getHeight()/10, null);
-            g.drawImage(numbers[3], 425, 535, numbers[1].getWidth()/10, numbers[1].getHeight()/10, null);
-            g.drawImage(numbers[4], 425, 590, numbers[1].getWidth()/10, numbers[1].getHeight()/10, null);
-            g.drawImage(period, 455, 425, numbers[1].getWidth()/10, numbers[1].getHeight()/10, null);
-            g.drawImage(period, 455, 480, numbers[1].getWidth()/10, numbers[1].getHeight()/10, null);
-            g.drawImage(period, 455, 535, numbers[1].getWidth()/10, numbers[1].getHeight()/10, null);
-            g.drawImage(period, 455, 590, numbers[1].getWidth()/10, numbers[1].getHeight()/10, null);
+            g.drawImage(numbers[1], 450, 425, numbers[1].getWidth()/10, numbers[1].getHeight()/10, null);
+            g.drawImage(numbers[2], 450, 480, numbers[1].getWidth()/10, numbers[1].getHeight()/10, null);
+            if(players.length > 2) 
+            g.drawImage(numbers[3], 450, 535, numbers[1].getWidth()/10, numbers[1].getHeight()/10, null);
+            if(players.length > 3)
+            g.drawImage(numbers[4], 450, 590, numbers[1].getWidth()/10, numbers[1].getHeight()/10, null);
+            g.drawImage(period, 480, 425, numbers[1].getWidth()/10, numbers[1].getHeight()/10, null);
+            g.drawImage(period, 480, 480, numbers[1].getWidth()/10, numbers[1].getHeight()/10, null);
+            if(players.length > 2) 
+            g.drawImage(period, 480, 535, numbers[1].getWidth()/10, numbers[1].getHeight()/10, null);
+            if(players.length > 3)
+            g.drawImage(period, 480, 590, numbers[1].getWidth()/10, numbers[1].getHeight()/10, null);
 
-            g.drawImage(player, 500, 425,player.getWidth()/10, player.getHeight()/10, null);
-            g.drawImage(player, 500, 480, player.getWidth()/10, player.getHeight()/10, null);
-            g.drawImage(player, 500, 535, player.getWidth()/10, player.getHeight()/10, null);
-            g.drawImage(player, 500, 590, player.getWidth()/10, player.getHeight()/10, null);
+            g.drawImage(player, 525, 425,player.getWidth()/10, player.getHeight()/10, null);
+            g.drawImage(player, 525, 480, player.getWidth()/10, player.getHeight()/10, null);
+            if(players.length > 2) 
+            g.drawImage(player, 525, 535, player.getWidth()/10, player.getHeight()/10, null);
+            if(players.length > 3)
+            g.drawImage(player, 525, 590, player.getWidth()/10, player.getHeight()/10, null);
 
         //do the score
         players[0].addnumber(1);
         players[1].addnumber(2);
-        players[2].addnumber(3);
-        players[3].addnumber(4);
+        if(players.length > 2) {
+        players[2].addnumber(3);}
+        if(players.length > 3) {
+        players[3].addnumber(4);}
 
         for(int c = 0; c  < players.length-1; c++) { //orders players in array
             if(players[c].getScore() > players[c+1].getScore()) {
@@ -118,22 +127,57 @@ public class SplendorEnd extends JPanel {
         }
        
         for(int c = 0; c < players.length; c++) { //is gonna draw the list of scoreboard like "1. Player 1 -"" depending on player size
-        g.drawImage(numbers[players[c].getnumber()], 700, 590-55*c, numbers[1].getWidth()/10, numbers[1].getHeight()/10, null);
+        
+        	if(players.length == 2) {
+        		g.drawImage(numbers[players[c].getnumber()], 725, 590-55*(2+c), numbers[1].getWidth()/10, numbers[1].getHeight()/10, null);
+        		
+        		if(players[c].getScore() >= 10) {
+                    int lastdigit = players[c].getScore();
+                    int firstdigit = lastdigit/10;
+                    lastdigit  %=10;
+
+                    g.drawImage(numbers[firstdigit], 775, 590-55*(2+c), numbers[1].getWidth()/10, numbers[1].getHeight()/10, null);
+                    g.drawImage(numbers[lastdigit], 810, 590-55*(2+c), numbers[1].getWidth()/10, numbers[1].getHeight()/10, null);
+                }
+                else {
+                    g.drawImage(numbers[players[c].getScore()], 775, 590-55*(2+c), numbers[1].getWidth()/10, numbers[1].getHeight()/10, null);
+                }
+        		
+            }
+        	else if(players.length == 3) {
+        		g.drawImage(numbers[players[c].getnumber()], 725, 590-55*(1+c), numbers[1].getWidth()/10, numbers[1].getHeight()/10, null);
+        		
+        		if(players[c].getScore() >= 10) {
+                    int lastdigit = players[c].getScore();
+                    int firstdigit = lastdigit/10;
+                    lastdigit  %=10;
+
+                    g.drawImage(numbers[firstdigit], 775, 590-55*(1+c), numbers[1].getWidth()/10, numbers[1].getHeight()/10, null);
+                    g.drawImage(numbers[lastdigit], 810, 590-55*(1+c), numbers[1].getWidth()/10, numbers[1].getHeight()/10, null);
+                }
+                else {
+                    g.drawImage(numbers[players[c].getScore()], 775, 590-55*(1+c), numbers[1].getWidth()/10, numbers[1].getHeight()/10, null);
+                }
+        		
+            }
+        	
+        	else {
+        	g.drawImage(numbers[players[c].getnumber()], 725, 590-55*c, numbers[1].getWidth()/10, numbers[1].getHeight()/10, null);
             
             if(players[c].getScore() >= 10) {
                 int lastdigit = players[c].getScore();
                 int firstdigit = lastdigit/10;
                 lastdigit  %=10;
 
-                g.drawImage(numbers[firstdigit], 750, 590-55*c, numbers[1].getWidth()/10, numbers[1].getHeight()/10, null);
-                g.drawImage(numbers[lastdigit], 775, 590-55*c, numbers[1].getWidth()/10, numbers[1].getHeight()/10, null);
+                g.drawImage(numbers[firstdigit], 775, 590-55*c, numbers[1].getWidth()/10, numbers[1].getHeight()/10, null);
+                g.drawImage(numbers[lastdigit], 810, 590-55*c, numbers[1].getWidth()/10, numbers[1].getHeight()/10, null);
             }
             else {
-                g.drawImage(numbers[players[c].getScore()], 750, 590-55*c, numbers[1].getWidth()/10, numbers[1].getHeight()/10, null);
+                g.drawImage(numbers[players[c].getScore()], 775, 590-55*c, numbers[1].getWidth()/10, numbers[1].getHeight()/10, null);
             }
         }
         
-
+        }
     }
 
     
