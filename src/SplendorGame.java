@@ -812,7 +812,7 @@ public class SplendorGame extends JPanel implements MouseListener{
         canClickMoreTokens = true;
         canBuyCard = true;
         canBuyPatron = false;
-	alreadyClickedYellow = true;
+	alreadyClickedYellow = false;
         endTurn = false;
         replaceTokens = false;
 
