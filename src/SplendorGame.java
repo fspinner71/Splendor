@@ -1099,6 +1099,9 @@ public class SplendorGame extends JPanel implements MouseListener{
             }
         }
     }
+        }
+        }
+    }
     public void mouseClicked(MouseEvent e) {}
     public void mouseEntered(MouseEvent e) {}
     public void mouseExited(MouseEvent e) {}
