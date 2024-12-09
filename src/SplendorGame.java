@@ -67,7 +67,6 @@ public class SplendorGame extends JPanel implements MouseListener{
     public boolean canBuyPatron;
     public int endingTurns;
     private boolean tokenerror; //token erorr 
-    private boolean alreadyClickedYellow;
     private static BufferedImage[] tokenImages;
     public static BufferedImage[] cardBacks;
     private static BufferedImage[] playerTabs;
@@ -129,6 +128,7 @@ public class SplendorGame extends JPanel implements MouseListener{
     		System.out.println("Failed to load SplendorGame images");
     	}
     }
+    public SplendorGame(int size)
     public SplendorGame(int size, SplendorFrame frame)
     {
         this.size = size; //how many players are playign the game
@@ -186,12 +186,8 @@ public class SplendorGame extends JPanel implements MouseListener{
         canBuyCard = true;
         canClickMoreTokens = true;
         tokenerror = false;
-<<<<<<< Updated upstream
         endTurn = false;
         test();
-=======
-        alreadyClickedYellow = false;
->>>>>>> Stashed changes
         repaint();
         addMouseListener(this);
    
@@ -763,6 +759,8 @@ public class SplendorGame extends JPanel implements MouseListener{
     }
 
     public void endGame() { //player has mroe than 15 points will be called every turn after u get 15 to check if u need to like end the whole game
+        if(endingTurns == 4) { //4 cause its called the first tiem
+            //swtich panels
         System.out.println("game is ending");
         if(endingTurns == players.length-1) { 
             frame.addEnd(players);
@@ -806,6 +804,7 @@ public class SplendorGame extends JPanel implements MouseListener{
     public void errorScreen(){ //general error screen
         System.out.println("error panel pops up");
         errorPanel = true;
+
         //genenral error message wi p 
         repaint();
     }
@@ -881,31 +880,6 @@ public class SplendorGame extends JPanel implements MouseListener{
 
     public void reserveCard(Card c, int index){
         players[turn].addReservedCards(c);
-    }
-
-    public void buyReservedCards(Card c, int index){
-        boolean x = players[turn].buyCard(c);
-        if(x == true) { //if player does buy card
-            int[] price = c.getPrice();
-            int[] gems = players[turn].getGems();
-            
-            gems[c.getGem()]--; //remove one gem from the color that the card was boight bc it was just added ykyk
-            canBuyCard = false;
-            for (int i = 0; i < 5; i++) { //add back tokens to game
-                
-                int add = price[i] - gems[i];
-                if(add > 0) {
-                this.tokens[i] += add;
-                System.out.println("added " + add + " " + i);
-                }
-            }
-         
-            players[turn].getReservedCards().remove(index);
-            nextTurn();
-        }
-        if(x==false) {
-            errorScreen();
-        }
     }
 
     public void mousePressed(MouseEvent e) {
@@ -1038,38 +1012,32 @@ public class SplendorGame extends JPanel implements MouseListener{
         }
 
         if (tokenButtons[5].isInside(x, y)){ // Golden tokens, WIP
-            if (alreadyClickedYellow || players[turn].getReservedCards().size() >= 3) errorScreen();
-            else {
-                alreadyClickedYellow = true;
-                tokens[5]--;
-                players[turn].addToken(5);
-            }
+            tokens[5]--;
+            players[turn].addToken(5);
         }
 
         for(int c = 0; c < cards1.length; c++) { //if u click lvl 1 card
+            if(canBuyCard) { 
             
                 if(cards1[c].getButton().isInside(x,y)) {
                     if(canBuyCard) { 
                     int[] tokArr = players[turn].getTokens();
-                    if (tokArr[5] > 0 && alreadyClickedYellow) {
-                        reserveCard(cards1[c], c);
-                        nextTurn();
-                    } else buyCard(cards1[c], c);
+                    if (tokArr[5] > 0) reserveCard(cards1[c], c);
+                    else buyCard(cards1[c], c);
                 }
                 else {
                     errorScreen(NOTOKENS);
                 } 
             } 
         }
-        for (int c = 0; c < cards2.length; c++) { //if u click lvl 2 card 
+        for (int c1 = 0; c1 < cards2.length; c1++) { //if u click lvl 2 card 
+            if (canBuyCard) { 
             
-                if (cards2[c].getButton().isInside(x,y)) {
+                if (cards2[c1].getButton().isInside(x,y)) {
                     if(canBuyCard) { 
                     int[] tokArr = players[turn].getTokens();
-                    if (tokArr[5] > 0 && alreadyClickedYellow) {
-                        reserveCard(cards2[c], c);
-                        nextTurn();
-                    } else buyCard(cards2[c], c);
+                    if (tokArr[5] > 0) reserveCard(cards2[c1], c1);
+                    else buyCard(cards2[c1], c1);
                 }
                 else {
                     errorScreen(NOTOKENS);
@@ -1078,16 +1046,14 @@ public class SplendorGame extends JPanel implements MouseListener{
             
         }
 
-        }
         for (int c = 0; c < cards3.length; c++) { //if u click lvl 2 card
+            if(canBuyCard) { 
             
                 if(cards3[c].getButton().isInside(x,y)) {
                     if(canBuyCard) { 
                 int[] tokArr = players[turn].getTokens();
-                if (tokArr[5] > 0 && alreadyClickedYellow) {
-                    reserveCard(cards3[c], c);
-                    nextTurn();
-                } else buyCard(cards3[c], c);
+                if (tokArr[5] > 0) reserveCard(cards3[c], c);
+                else buyCard(cards3[c], c);
                 }
                 else {
                     errorScreen(NOTOKENS);
@@ -1097,11 +1063,6 @@ public class SplendorGame extends JPanel implements MouseListener{
         
         }
 
-        for (int c = 0; c < players[turn].getReservedCards().size(); c++){
-            if (players[turn].getReservedCards().get(c).getButton().isInside(x, y)){
-                
-            }
-        }
 
         if(canBuyPatron) { //ifplayercanbuy patron
             for(int c = 0; c < patrons.length; c++) {
@@ -1119,7 +1080,7 @@ public class SplendorGame extends JPanel implements MouseListener{
         }
         }
         else {
-            for(int c = 0; c < patrons.length; c++) {
+            for (int c = 0; c < patrons.length; c++) {
                 if(patrons[c] != null) {
                 if(patrons[c].getButton().isInside(x, y)) {
                 
@@ -1130,15 +1091,13 @@ public class SplendorGame extends JPanel implements MouseListener{
         }
 
         repaint();
-    }
-    else { //if error occurs
-       if(okButton.isInside(x, y)) {
-       errorPanel = false;
-       errorMessage = null;
-       repaint();
-
-    }
-}
+            } else { //if error occurs
+                if(okButton.isInside(x, y)) {
+                errorPanel = false;
+                errorMessage = null;
+                repaint();
+            }
+        }
     }
     public void mouseClicked(MouseEvent e) {}
     public void mouseEntered(MouseEvent e) {}
