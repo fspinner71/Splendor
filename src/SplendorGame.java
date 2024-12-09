@@ -1030,76 +1030,71 @@ public class SplendorGame extends JPanel implements MouseListener{
                 } 
             } 
         }
-        for (int c1 = 0; c1 < cards2.length; c1++) { //if u click lvl 2 card 
-            if (canBuyCard) { 
-            
-                if (cards2[c1].getButton().isInside(x,y)) {
-                    if(canBuyCard) { 
-                    int[] tokArr = players[turn].getTokens();
-                    if (tokArr[5] > 0) reserveCard(cards2[c1], c1);
-                    else buyCard(cards2[c1], c1);
-                }
-                else {
-                    errorScreen(NOTOKENS);
-                } 
-            }
-            
-        }
-
-        for (int c = 0; c < cards3.length; c++) { //if u click lvl 2 card
-            if(canBuyCard) { 
-            
-                if(cards3[c].getButton().isInside(x,y)) {
-                    if(canBuyCard) { 
-                int[] tokArr = players[turn].getTokens();
-                if (tokArr[5] > 0) reserveCard(cards3[c], c);
-                else buyCard(cards3[c], c);
-                }
-                else {
-                    errorScreen(NOTOKENS);
-                } 
-            }
-           
-        
-        }
-
-
-        if(canBuyPatron) { //ifplayercanbuy patron
-            for(int c = 0; c < patrons.length; c++) {
-                if(patrons[c] != null) {
-                if(patrons[c].getButton().isInside(x, y)) {
+            for (int c1 = 0; c1 < cards2.length; c1++) { //if u click lvl 2 card 
+                if (canBuyCard) { 
                 
-                    if(players[turn].buyPatron(patrons[c])) {
-                        canBuyPatron = false;
-                        patrons[c] = null;
-                        endTurn = true;
-                        break;
+                    if (cards2[c1].getButton().isInside(x,y)) {
+                        if(canBuyCard) { 
+                        int[] tokArr = players[turn].getTokens();
+                        if (tokArr[5] > 0) reserveCard(cards2[c1], c1);
+                        else buyCard(cards2[c1], c1);
+                    }
+                    else {
+                        errorScreen(NOTOKENS);
+                    } 
+                }
+                
+            }
+
+            for (int c = 0; c < cards3.length; c++) { //if u click lvl 2 card
+                if(canBuyCard) { 
+                
+                    if(cards3[c].getButton().isInside(x,y)) {
+                        if(canBuyCard) { 
+                    int[] tokArr = players[turn].getTokens();
+                    if (tokArr[5] > 0) reserveCard(cards3[c], c);
+                    else buyCard(cards3[c], c);
+                    }
+                    else {
+                        errorScreen(NOTOKENS);
+                    } 
+                }
+            
+            
+            }
+
+
+            if(canBuyPatron) { //ifplayercanbuy patron
+                for(int c = 0; c < patrons.length; c++) {
+                    if(patrons[c] != null) {
+                    if(patrons[c].getButton().isInside(x, y)) {
+                    
+                        if(players[turn].buyPatron(patrons[c])) {
+                            canBuyPatron = false;
+                            patrons[c] = null;
+                            endTurn = true;
+                            break;
+                        }
                     }
                 }
-            }
-        }
-        }
-        else {
-            for (int c = 0; c < patrons.length; c++) {
-                if(patrons[c] != null) {
-                if(patrons[c].getButton().isInside(x, y)) {
-                
-                    errorScreen(NOCARDS);
+                        } else {
+                            for (int c = 0; c < patrons.length; c++) {
+                                if(patrons[c] != null) {
+                                if(patrons[c].getButton().isInside(x, y)) {
+                                    errorScreen(NOCARDS);
+                                }
+                            }
+                        }
+                    }
+
+                    repaint();
+                } else { //if error occurs
+                    if(okButton.isInside(x, y)) {
+                    errorPanel = false;
+                    errorMessage = null;
+                    repaint();
                 }
             }
-        }
-        }
-
-        repaint();
-            } else { //if error occurs
-                if(okButton.isInside(x, y)) {
-                errorPanel = false;
-                errorMessage = null;
-                repaint();
-            }
-        }
-    }
-        }
         }
     }
     public void mouseClicked(MouseEvent e) {}
