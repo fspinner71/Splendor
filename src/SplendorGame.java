@@ -773,23 +773,20 @@ public class SplendorGame extends JPanel implements MouseListener{
 
     }
     public void nextTurn() { //turn moves 0-3  after u buy patron
-            //check to see if someone has more than 15 points
+        //check to see if someone has more than 15 points
 
-            for(int c  =0; c < players.length; c++) {
-                if(players[c].getScore() >= 15) {
-                    endGame();
-                }
+        for(int c  =0; c < players.length; c++) {
+            if(players[c].getScore() >= 15) {
+                endGame();
             }
+        }
 
-
-
-        
         if(turn == players.length-1) {
             turn = 0;
-        }
-        else {
+        } else {
             turn++;
         }
+
         tokenClickCount = new int[6]; //reset token vairalbes so next player can click stuff
         tokenClickCounter = 0;
         canClickMoreTokens = true;
@@ -825,7 +822,7 @@ public class SplendorGame extends JPanel implements MouseListener{
     
 
     public void buyCard(Card c, int index) {
-        boolean x = players[turn].buyCard(c);
+        int[] x = players[turn].buyCard(c);
         if(x == true) { //if player does buy card
             int[] price = c.getPrice();
             int[] gems = players[turn].getGems();
@@ -842,15 +839,15 @@ public class SplendorGame extends JPanel implements MouseListener{
             }
          
             int level = c.getLevel(); //remove card and replace it 
-            if(level ==1) {
+            if(level == 1) {
                 cards1[index] = draw1.get(0);
                 draw1.remove(0);
             }
-            if(level ==2) {
+            if(level == 2) {
                 cards2[index] = draw2.get(0);
                 draw2.remove(0);
             }
-            if(level ==3) {
+            if(level == 3) {
                 cards3[index] = draw3.get(0);
                 draw3.remove(0);
             }
@@ -884,54 +881,50 @@ public class SplendorGame extends JPanel implements MouseListener{
 
     public void mousePressed(MouseEvent e) {
         
-         //if error doesnt occurs
+        //if error doesnt occurs
         if(e.getButton() != MouseEvent.BUTTON1) {return;}
 
         int x = e.getX();
     	int y = e.getY();
-    	if(errorPanel == false){ //if error screen is not showing curretnly
-            
-        if(endTurnButton.isInside(x, y) && endTurn) { //if u click end turn button and end tur = ture
-            nextTurn();
-
-        }
-    	if(otherTabButton.isInside(x, y))
-    	{
-    		showOtherTab = !showOtherTab;
-    	}
+    	if(errorPanel == false){ //if error screen is not showing curretnly    
+            if(endTurnButton.isInside(x, y) && endTurn) { //if u click end turn button and end tur = ture
+                nextTurn();
+            }
+            if(otherTabButton.isInside(x, y))
+            {
+                showOtherTab = !showOtherTab;
+            }
     	
-    	if(!showOtherTab)
-    	{
-    		if(otherLeftButton.isInside(x, y))
-    		{
-    			otherPlayer--;
-    			if(otherPlayer == turn)
-    			{
-    				otherPlayer--;
-    			}
-    			if(otherPlayer < 0)
-    			{
-    				otherPlayer = size - 1;
-    			}
-    			if(otherPlayer == turn)
-    			{
-    				otherPlayer--;
-    			}
-    		} else if(otherRightButton.isInside(x, y))
-    		{
-    			otherPlayer++;
-    			if(otherPlayer == turn)
-    			{
-    				otherPlayer++;
-    			}
-    			if(otherPlayer >= size)
-    			{
-    				otherPlayer = 0;
-    			}
-    			if(otherPlayer == turn)
-    			{
-    				otherPlayer++;
-    			}
+    	    if(!showOtherTab) {
+    		    if(otherLeftButton.isInside(x, y)){
+    			    otherPlayer--;
+                    if(otherPlayer == turn)
+                    {
+                        otherPlayer--;
+                    }
+                    if(otherPlayer < 0)
+                    {
+                        otherPlayer = size - 1;
+                    }
+                    if(otherPlayer == turn)
+                    {
+                        otherPlayer--;
+                    }
+    		    } else if (otherRightButton.isInside(x, y)){
+                    otherPlayer++;
+                    if(otherPlayer == turn)
+                    {
+                        otherPlayer++;
+                    }
+                    if(otherPlayer >= size)
+                    {
+                        otherPlayer = 0;
+                    }
+                    if(otherPlayer == turn)
+                    {
+                        otherPlayer++;
+                    }
+                }
     		}
     	}
     	
@@ -971,21 +964,19 @@ public class SplendorGame extends JPanel implements MouseListener{
                     else {
                         tokens[i]--;
                         players[turn].addToken(i);
-                        
                         tokenClickCount[i]++;
                     }
                 } else if (tokenClickCounter == 1) {
                     if (tokenClickCount[i] == 1){
                         if (tokens[i] < 3) { errorScreen(); break;} //3 cuz if u draw one from 4 itll be 3yknow
                         else {
-
-                        tokens[i]--;
-                        players[turn].addToken(i);
-                        tokenClickCount[i]++;
-                        canClickMoreTokens = false;
-                        buyPatron();
-                        System.out.println("draws 2");
-                        break;
+                            tokens[i]--;
+                            players[turn].addToken(i);
+                            tokenClickCount[i]++;
+                            canClickMoreTokens = false;
+                            buyPatron();
+                            System.out.println("draws 2");
+                            break;
                         }
                     }
                     
@@ -994,7 +985,6 @@ public class SplendorGame extends JPanel implements MouseListener{
                     tokens[i]--;
                     players[turn].addToken(i);
                     tokenClickCount[i]++;
-                    
                 } else {
                     if (tokenClickCount[i] == 1 || tokens[i] == 0 || !canClickMoreTokens) { errorScreen(MAXTOKENS); break;}
                     else {
@@ -1018,81 +1008,74 @@ public class SplendorGame extends JPanel implements MouseListener{
 
         for(int c = 0; c < cards1.length; c++) { //if u click lvl 1 card
             if(canBuyCard) { 
-            
                 if(cards1[c].getButton().isInside(x,y)) {
                     if(canBuyCard) { 
-                    int[] tokArr = players[turn].getTokens();
-                    if (tokArr[5] > 0) reserveCard(cards1[c], c);
+                        int[] tokArr = players[turn].getTokens();
+                        if (tokArr[5] > 0) reserveCard(cards1[c], c);
+                    }
                     else buyCard(cards1[c], c);
                 }
                 else {
                     errorScreen(NOTOKENS);
                 } 
-            } 
+            }
         }
-            for (int c1 = 0; c1 < cards2.length; c1++) { //if u click lvl 2 card 
-                if (canBuyCard) { 
-                
-                    if (cards2[c1].getButton().isInside(x,y)) {
-                        if(canBuyCard) { 
+        
+        for (int c1 = 0; c1 < cards2.length; c1++) { //if u click lvl 2 card 
+            if (canBuyCard) { 
+                if (cards2[c1].getButton().isInside(x,y)) {
+                    if(canBuyCard) { 
                         int[] tokArr = players[turn].getTokens();
                         if (tokArr[5] > 0) reserveCard(cards2[c1], c1);
                         else buyCard(cards2[c1], c1);
                     }
-                    else {
-                        errorScreen(NOTOKENS);
-                    } 
                 }
-                
+                else {
+                    errorScreen(NOTOKENS);
+                } 
             }
+        }
 
-            for (int c = 0; c < cards3.length; c++) { //if u click lvl 2 card
-                if(canBuyCard) { 
-                
-                    if(cards3[c].getButton().isInside(x,y)) {
-                        if(canBuyCard) { 
-                    int[] tokArr = players[turn].getTokens();
-                    if (tokArr[5] > 0) reserveCard(cards3[c], c);
-                    else buyCard(cards3[c], c);
-                    }
-                    else {
-                        errorScreen(NOTOKENS);
-                    } 
-                }
+        for (int c2 = 0; c2 < cards3.length; c2++) { //if u click lvl 2 card
+            if(canBuyCard) { 
             
-            
+                if(cards3[c2].getButton().isInside(x,y)) {
+                    if(canBuyCard) { 
+                        int[] tokArr = players[turn].getTokens();
+                        if (tokArr[5] > 0) reserveCard(cards3[c2], c2);
+                    } else buyCard(cards3[c2], c2);
+                } else {
+                    errorScreen(NOTOKENS);
+                } 
             }
+        }
 
-
-            if(canBuyPatron) { //ifplayercanbuy patron
-                for(int c = 0; c < patrons.length; c++) {
-                    if(patrons[c] != null) {
-                    if(patrons[c].getButton().isInside(x, y)) {
-                    
-                        if(players[turn].buyPatron(patrons[c])) {
+        if(canBuyPatron) { //ifplayercanbuy patron
+            for (int c4 = 0; c4 < patrons.length; c4++) {
+                if(patrons[c4] != null) {
+                    if(patrons[c4].getButton().isInside(x, y)) {
+                        if(players[turn].buyPatron(patrons[c4])) {
                             canBuyPatron = false;
-                            patrons[c] = null;
+                            patrons[c4] = null;
                             endTurn = true;
                             break;
                         }
-                    }
-                }
-                        } else {
-                            for (int c = 0; c < patrons.length; c++) {
-                                if(patrons[c] != null) {
-                                if(patrons[c].getButton().isInside(x, y)) {
+                    } else {
+                        for (int c5 = 0; c5 < patrons.length; c5++) {
+                            if(patrons[c5] != null) {
+                                if(patrons[5].getButton().isInside(x, y)) {
                                     errorScreen(NOCARDS);
                                 }
                             }
                         }
+                        repaint();
                     }
-
-                    repaint();
                 } else { //if error occurs
                     if(okButton.isInside(x, y)) {
-                    errorPanel = false;
-                    errorMessage = null;
-                    repaint();
+                        errorPanel = false;
+                        errorMessage = null;
+                        repaint();
+                    }
                 }
             }
         }
