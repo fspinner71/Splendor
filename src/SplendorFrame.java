@@ -8,6 +8,7 @@ public class SplendorFrame extends JFrame {
     private final int HEIGHT = 720;
     
     SplendorMenu menu;
+    PlayerSelect select;
     SplendorGame game;
     SplendorEnd end;
 
@@ -33,12 +34,19 @@ public class SplendorFrame extends JFrame {
         
         setVisible(true);
     }
-    public void addGame()
-    {
-    	game = new SplendorGame(4, this);
-    	menu.setVisible(false);
+    public void addSelect() {
     	
+    	select = new PlayerSelect(this);
+   
+    	menu.setVisible(false);
     	remove(menu);
+    	add(select);
+    }
+    public void addGame(int size)
+    {
+    	game = new SplendorGame(size, this);
+    	select.setVisible(false);
+    	remove(select);
     	add(game);
     }
     public void addEnd(Player[] a)

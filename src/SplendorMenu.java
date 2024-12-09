@@ -1,4 +1,5 @@
 import java.awt.*;
+
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.*;
@@ -53,7 +54,7 @@ public class SplendorMenu extends JPanel implements MouseListener {
  
     	if(startButton.isInside(x, y))
     	{
-    		parentFrame.addGame();
+    		parentFrame.addSelect();
     	}
     }
     public void mouseClicked(MouseEvent e) {}
